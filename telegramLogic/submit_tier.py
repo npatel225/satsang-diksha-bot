@@ -14,9 +14,15 @@ def submit_tier(update: Update, context: CallbackContext):
     phone_number = context.user_data.get('phone_number', '')
 
     person: User = update.effective_user
+    person_id = person.id
 
-    UserSheet().append_sheet([f'{person.id}', tier, phone_number])
+    user_sheet = UserSheet()
 
-    query.edit_message_text(text=f'You have successfully registered. Your ID is {person.id}')
+    if not user_sheet.uid_check(person_id):
+        user_sheet.append_sheet([f'{person_id}', tier, phone_number])
+
+        query.edit_message_text(text=f'You have successfully registered. Your ID is {person_id}')
+    else:
+        query.edit_message_text(text=f'An user with the ID, {person_id}, already exists')
 
     return ConversationHandler.END
