@@ -16,4 +16,4 @@ def choose_tier(update: Update, context: CallbackContext):
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text("Please select your tier", reply_markup=reply_markup)
 
-    return ConversationHandler.END
+    return '/tier'
