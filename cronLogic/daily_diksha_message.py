@@ -19,3 +19,7 @@ def daily_diksha_message():
     for tier, messages in data.items():
         for user_id in users[tier]:
             [bot.send_message(user_id, f'{date.today()}\n\n{message}') for message in messages]
+
+
+if __name__ == '__main__':
+    daily_diksha_message()
