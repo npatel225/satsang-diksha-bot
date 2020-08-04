@@ -16,5 +16,5 @@ class SheetCore(SheetConfig):
         scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file']
         return gspread.service_account('./credentials.json', scopes=scopes)
 
-    def get_sheet(self, title):
+    def get_sheet(self, title: str):
         return self.spreadsheet.worksheet(title=title)

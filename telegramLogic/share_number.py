@@ -1,6 +1,4 @@
-import threading
-
-from telegram import Update, Message, CallbackQuery, KeyboardButton, ReplyKeyboardMarkup
+from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import CallbackContext
 
 from send_typing_action import send_typing_action
@@ -13,6 +11,6 @@ def share_number(update: Update, context: CallbackContext):
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, one_time_keyboard=True)
 
     update.message.reply_text('Please share your contact information with us (required)',
-                                         reply_markup=reply_markup)
+                              reply_markup=reply_markup)
 
     return '/choose_tier'
