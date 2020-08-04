@@ -6,7 +6,11 @@ from threading import Thread
 from telegram import Update
 from telegram.error import Unauthorized, BadRequest, TimedOut, NetworkError, ChatMigrated, TelegramError
 from telegram.ext import Dispatcher, Updater, Handler, CallbackContext, ConversationHandler, CommandHandler, \
-    MessageHandler, Filters
+    MessageHandler, Filters, CallbackQueryHandler
+
+from telegramLogic.choose_tier import choose_tier
+from telegramLogic.share_number import share_number
+from telegramLogic.submit_tier import submit_tier
 
 
 class Telegram:
@@ -80,5 +84,17 @@ def main():
         entry_points=[CommandHandler('start', share_number)],
         states={
             '/choose_tier': [MessageHandler(Filters.contact, choose_tier)],
-        }
+            '/tier': [CallbackQueryHandler(submit_tier)]
+        },
+        fallbacks=[CommandHandler('start', share_number)]
     )
+
+    telegram.add_handler(start_handler)
+
+    telegram.dispatcher.add_error_handler(telegram.error_callback)
+
+    telegram.execute()
+
+
+if __name__ == '__main__':
+    main()
