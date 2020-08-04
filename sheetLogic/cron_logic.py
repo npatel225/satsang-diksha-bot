@@ -13,5 +13,5 @@ class CronLogic(UserSheet):
         for tier in self.tiers:
             for user in self.sheet.get_all_values()[1:]:
                 if user[1] == tier:
-                    users.get(tier).append(user[1])
+                    users[tier].append(user[1])
         return users

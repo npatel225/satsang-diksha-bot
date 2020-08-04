@@ -17,5 +17,5 @@ def test_cron(update: Update, context: CallbackContext):
     users = cron_logic.users()
 
     for tier, message in data.items():
-        for user_id in users.get(tier):
+        for user_id in users[tier]:
             context.bot.send_message(user_id, f'{date.today()}\n\n{message}')
