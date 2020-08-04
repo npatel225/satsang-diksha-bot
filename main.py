@@ -11,7 +11,6 @@ from telegram.ext import Dispatcher, Updater, Handler, CallbackContext, Conversa
 from telegramLogic.choose_tier import choose_tier
 from telegramLogic.share_number import share_number
 from telegramLogic.submit_tier import submit_tier
-from telegramLogic.test_cron import test_cron
 
 
 class Telegram:
@@ -90,9 +89,6 @@ def main():
         fallbacks=[CommandHandler('start', share_number)]
     )
     telegram.add_handler(start_handler)
-
-    test_handler = CommandHandler('test', test_cron)
-    telegram.add_handler(test_handler)
 
     telegram.dispatcher.add_error_handler(telegram.error_callback)
 

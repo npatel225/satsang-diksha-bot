@@ -1,15 +1,15 @@
+import os
 from datetime import date
 
-from telegram import Update
-from telegram.ext import CallbackContext
+from telegram import Bot
 
-from send_typing_action import send_typing_action
 from sheetLogic.cron_logic import CronLogic
 from sheetLogic.tier_logic import TierLogic
 
 
-@send_typing_action
-def test_cron(update: Update, context: CallbackContext):
+def daily_diksha_message():
+    token = os.getenv('TELEGRAM_TOKEN')
+    bot: Bot = Bot(token)
     tier_logic = TierLogic()
     data = tier_logic.get_today_data()
 
@@ -18,4 +18,4 @@ def test_cron(update: Update, context: CallbackContext):
 
     for tier, messages in data.items():
         for user_id in users[tier]:
-            [context.bot.send_message(user_id, f'{date.today()}\n\n{message}') for message in messages]
+            [bot.send_message(user_id, f'{date.today()}\n\n{message}') for message in messages]
