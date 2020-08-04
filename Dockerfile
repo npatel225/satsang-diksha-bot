@@ -1,6 +1,6 @@
 FROM python:3-slim
 
-RUN apt update && apt install gcc build-essential libssl-dev libffi-dev python3-dev -y
+RUN apt update && apt upgrade -y && apt install gcc build-essential libssl-dev libffi-dev python3-dev -y
 COPY . /app
 WORKDIR /app
 ENV PYTHONPATH=/app
