@@ -12,7 +12,7 @@ def submit_tier(update: Update, context: CallbackContext):
     context.user_data.update({'tier': tier})
     phone_number = context.user_data.get('phone_number', '')
 
-    info = f'Phone Number: {phone_number}, Tier: {tier}, User\'s Internal ID: {update.message.chat_id}'
+    info = f'Phone Number: {phone_number}, Tier: {tier}'
 
     query.edit_message_text(text=info)
 
