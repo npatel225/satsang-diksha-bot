@@ -23,6 +23,6 @@ def submit_tier(update: Update, context: CallbackContext):
 
         query.edit_message_text(text=f'You have successfully registered. Your ID is {person_id}')
     else:
-        query.edit_message_text(text=f'An user with the ID, {person_id}, already exists')
+        query.edit_message_text(text=f'Your User ID, {person_id}, already exists')
 
     return ConversationHandler.END
