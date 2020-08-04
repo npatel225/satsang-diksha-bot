@@ -2,6 +2,7 @@ from telegram import Update, User
 from telegram.ext import CallbackContext, ConversationHandler
 
 from send_typing_action import send_typing_action
+from sheetLogic.user_sheet import UserSheet
 
 
 @send_typing_action
@@ -14,8 +15,8 @@ def submit_tier(update: Update, context: CallbackContext):
 
     person: User = update.effective_user
 
-    info = f'Phone Number: {phone_number}, Tier: {tier}, User ID: {person.id}'
+    UserSheet().append_sheet([f'{person.id}', tier, phone_number])
 
-    query.edit_message_text(text=info)
+    query.edit_message_text(text=f'You have successfully registered. Your ID is {person.id}')
 
     return ConversationHandler.END

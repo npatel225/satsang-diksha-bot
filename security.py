@@ -6,7 +6,7 @@ from cryptography.fernet import Fernet
 class Security:
 
     @staticmethod
-    def encrypt_cred():
+    def __encrypt_cred():
         key = getenv('CREDENTIALS_KEY')
         key = key.encode('utf-8')
 
@@ -38,8 +38,3 @@ class Security:
 
         with open(output_file, 'wb') as f:
             f.write(encrypted)
-
-
-if __name__ == '__main__':
-    s = Security()
-    s.decrypt_cred()
