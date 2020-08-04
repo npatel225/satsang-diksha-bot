@@ -25,5 +25,5 @@ class TierLogic(SheetCore):
         for tier, tier_sheet in self.tier_sheets.items():
             for data in tier_sheet.get_all_values()[1:]:
                 if datetime.strptime(data[DATE], '%m/%d/%Y').date() == date.today():
-                    today_data[data].append(f'{data[1]}\n\n{data[2]}\n\n{data[3]}')
+                    today_data[data].append(f'{data[GUJARATI_MESSAGE]}\n\n{data[ENGLISH_MESSAGE]}\n\n{data[AUDIO_LINK]}')
         return today_data

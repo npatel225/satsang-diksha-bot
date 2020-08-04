@@ -11,7 +11,7 @@ class CronLogic(UserSheet):
     def users(self):
         users: Dict[str, List[str]] = defaultdict(list)
         for tier in self.tiers:
-            for user in self.sheet:
+            for user in self.sheet.get_all_values()[1:]:
                 if user[1] == tier:
                     users.get(tier).append(user[1])
         return users
