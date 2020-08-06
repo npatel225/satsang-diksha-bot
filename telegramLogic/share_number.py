@@ -10,6 +10,8 @@ def share_number(update: Update, context: CallbackContext):
     custom_keyboard = [[contact_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, one_time_keyboard=True)
 
+    update.message.reply_text('Jai Swaminarayan, Welcome to the Satsang Diksha Bot. Please register as follows')
+
     update.message.reply_text('Please share your contact information with us (required)',
                               reply_markup=reply_markup)
 

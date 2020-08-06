@@ -1,4 +1,4 @@
-from telegram import Update, User
+from telegram import Update, User, ReplyKeyboardRemove
 from telegram.ext import CallbackContext, ConversationHandler
 
 from send_typing_action import send_typing_action
@@ -21,8 +21,10 @@ def submit_tier(update: Update, context: CallbackContext):
     if not user_sheet.uid_check(person_id):
         user_sheet.append_sheet([f'{person_id}', tier, phone_number])
 
-        query.edit_message_text(text=f'You have successfully registered. Your ID is {person_id}')
+        query.edit_message_text(text=f'You have successfully registered. Your ID is {person_id}',
+                                reply_markup=ReplyKeyboardRemove(selective=True))
     else:
-        query.edit_message_text(text=f'Your User ID, {person_id}, already exists')
+        query.edit_message_text(text=f'Your User ID, {person_id}, already exists',
+                                reply_markup=ReplyKeyboardRemove(selective=True))
 
     return ConversationHandler.END
