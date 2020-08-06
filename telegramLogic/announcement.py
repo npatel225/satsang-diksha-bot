@@ -1,4 +1,4 @@
-from telegram import Update, Message
+from telegram import Update, Message, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 
 from restricted_command import restricted_command
@@ -6,7 +6,9 @@ from restricted_command import restricted_command
 
 @restricted_command
 def announcement(update: Update, context: CallbackContext):
-    message: Message = update.message
+    tiers = ['Mahant', 'Pramukh', 'Yogi', 'Shastriji', 'All']
+    keyboard = [[InlineKeyboardButton(tier, callback_data=f'{tier}')] for tier in tiers]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text("Please select your challenge", reply_markup=reply_markup)
 
-    message.reply_text("Please reply with your announcement. Note: Once sent, it cannot be edited")
-    return message.text
+    return '/challenge'

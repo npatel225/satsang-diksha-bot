@@ -14,7 +14,10 @@ def broadcast_announcement(update: Update, context: CallbackContext):
 
     user_sheet = UserSheet()
     threads = []
-    for uid in user_sheet.get_all_uid():
+    challenge = context.user_data.get('broadcast_challenge', 'All')
+    if challenge == 'All':
+        challenge = None
+    for uid in user_sheet.get_challenge_uids(challenge=challenge):
         thread = Thread(target=lambda: context.bot.send_message(chat_id=uid, text=message.text, ))
         thread.start()
         threads.append(thread)

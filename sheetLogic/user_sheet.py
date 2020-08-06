@@ -14,8 +14,11 @@ class UserSheet(SheetCore):
     def append_sheet(self, values: List[str]):
         return self.sheet.append_row(values, value_input_option='USER_ENTERED', insert_data_option='INSERT_ROWS')
 
-    def get_all_uid(self):
-        return (person[0] for person in self.sheet.get_all_values()[1:])
+    def get_challenge_uids(self, challenge=None):
+        if challenge is None:
+            return (person[0] for person in self.sheet.get_all_values()[1:])
+        else:
+            return (person[0] for person in self.sheet.get_all_values()[1:] if person[1] == challenge)
 
     def uid_check(self, uid: int):
-        return f'{uid}' in set(self.get_all_uid())
+        return f'{uid}' in set(self.get_challenge_uids())
