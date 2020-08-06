@@ -10,7 +10,7 @@ from telegram.ext import Dispatcher, Updater, Handler, CallbackContext, Conversa
 
 from telegramLogic.announcement import announcement
 from telegramLogic.broadcast_announcement import broadcast_announcement
-from telegramLogic.choose_tier import choose_tier
+from telegramLogic.choose_tier import choose_challenge
 from telegramLogic.share_number import share_number
 from telegramLogic.submit_tier import submit_tier
 
@@ -76,14 +76,14 @@ class Telegram:
 
 
 def main():
-    logging.basicConfig(level=logging.INFO,
+    logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     telegram = Telegram()
     telegram.initialize()
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', share_number)],
         states={
-            '/choose_tier': [MessageHandler(Filters.contact, choose_tier)],
+            '/choose_tier': [MessageHandler(Filters.contact, choose_challenge)],
             '/tier': [CallbackQueryHandler(submit_tier)]
         },
         fallbacks=[CommandHandler('start', share_number)]
