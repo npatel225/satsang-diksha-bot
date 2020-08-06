@@ -1,11 +1,8 @@
 import os
 from datetime import date
-
 from telegram import Bot
-
 from sheetLogic.cron_logic import CronLogic
 from sheetLogic.tier_logic import TierLogic
-
 
 def daily_diksha_message():
     token = os.getenv('TELEGRAM_TOKEN')
@@ -19,7 +16,6 @@ def daily_diksha_message():
     for tier, messages in data.items():
         for user_id in users[tier]:
             [bot.send_message(user_id, f'{date.today()}\n\n{message}') for message in messages]
-
 
 if __name__ == '__main__':
     daily_diksha_message()

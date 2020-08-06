@@ -1,16 +1,13 @@
 from collections import defaultdict
 from datetime import datetime, date
 from typing import Dict, List, Tuple
-
 from gspread import Worksheet
-
 from sheetLogic.sheet_core import SheetCore
 
 DATE = 0
 GUJARATI_MESSAGE = 1
 ENGLISH_MESSAGE = 2
 AUDIO_LINK = 3
-
 
 class TierLogic(SheetCore):
     def __init__(self):

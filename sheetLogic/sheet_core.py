@@ -1,8 +1,6 @@
 import gspread
-
 from security import Security
 from sheetLogic.sheet_config import SheetConfig
-
 
 class SheetCore(SheetConfig):
     def __init__(self):

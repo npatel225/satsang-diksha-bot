@@ -11,5 +11,4 @@ def restricted_command(func):
             print("Unauthorized access denied for {}.".format(user_id))
             return
         return func(update, context, *args, **kwargs)
-
     return wrapped

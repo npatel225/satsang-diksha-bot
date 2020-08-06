@@ -79,9 +79,7 @@ def main():
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     telegram = Telegram()
-
     telegram.initialize()
-
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', share_number)],
         states={
@@ -91,18 +89,14 @@ def main():
         fallbacks=[CommandHandler('start', share_number)]
     )
     telegram.add_handler(start_handler)
-
     announcement_handler = ConversationHandler(
         entry_points=[CommandHandler('announcement', announcement)],
         states={'/announcement': [MessageHandler(Filters.text, broadcast_announcement)]},
         fallbacks=[CommandHandler('announcement', announcement)],
     )
     telegram.add_handler(announcement_handler)
-
     telegram.dispatcher.add_error_handler(telegram.error_callback)
-
     telegram.execute()
-
 
 if __name__ == '__main__':
     main()
