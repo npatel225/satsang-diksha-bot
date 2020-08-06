@@ -11,7 +11,6 @@ from sheetLogic.user_sheet import UserSheet
 @restricted_command
 def broadcast_announcement(update: Update, context: CallbackContext):
     message: Message = update.message
-
     user_sheet = UserSheet()
     threads = []
     challenge = context.user_data.get('broadcast_challenge', 'All')

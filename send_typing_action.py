@@ -8,7 +8,6 @@ def send_typing_action(func):
 
     @wraps(func)
     def command_func(update, context, *args, **kwargs):
-
         try:
             chat_id = None
             if update.effective_message:

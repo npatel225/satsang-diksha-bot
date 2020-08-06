@@ -11,7 +11,7 @@ def choose_challenge(update: Update, context: CallbackContext):
     contact = message.contact
     context.user_data.update({'phone_number': contact.phone_number})
 
-    tiers = ['Mahant', 'Pramukh', 'Yogi', 'Shastriji', ]
+    tiers = ['Mahant', 'Pramukh', 'Yogi', 'Shastriji']
 
     keyboard = [[InlineKeyboardButton(tier, callback_data=f'{tier}')] for tier in tiers]
     reply_markup = InlineKeyboardMarkup(keyboard)
