@@ -102,5 +102,6 @@ def main():
     telegram.dispatcher.add_error_handler(telegram.error_callback)
     telegram.execute()
 
+
 if __name__ == '__main__':
     main()

@@ -2,6 +2,7 @@ from telegram import Update, User, CallbackQuery
 from telegram.ext import CallbackContext, ConversationHandler
 
 from send_typing_action import send_typing_action
+from sheetLogic.sheet_messages import SheetMessages
 from sheetLogic.user_sheet import UserSheet
 
 
@@ -20,7 +21,8 @@ def submit_tier(update: Update, context: CallbackContext):
 
     if not user_sheet.uid_check(person_id):
         user_sheet.append_sheet([f'{person_id}', tier, phone_number])
-        query.edit_message_text(text=f'You have successfully registered. Your ID is {person_id}', )
+        message_dict = SheetMessages().message_dict()
+        query.edit_message_text(text=f'{message_dict.get(tier, "Error in getting challenge")}', )
     else:
         query.edit_message_text(text=f'Your User ID, {person_id}, already exists')
 
