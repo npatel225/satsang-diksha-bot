@@ -23,15 +23,17 @@ def submit_tier(update: Update, context: CallbackContext):
 
     user_sheet = UserSheet()
 
-    custom_keyboard: List[List[KeyboardButton]] = list(map(lambda m: [KeyboardButton(text=m)], message_dict.get('info')))
-    reply_markup = ReplyKeyboardMarkup(custom_keyboard, selective=True)
     context.bot.delete_message(chat_id=person_id, message_id=query.message.message_id)
 
     if not user_sheet.uid_check(person_id):
         user_sheet.append_sheet([f'{person_id}', tier, phone_number])
         text = f'{message_dict.get(tier, "Error in getting challenge")}'
+        custom_keyboard: List[List[KeyboardButton]] = list(
+            map(lambda m: [KeyboardButton(text=f'{m} - {tier}')], message_dict.get('info')))
+        reply_markup = ReplyKeyboardMarkup(custom_keyboard, selective=True)
+        Thread(target=lambda: context.bot.send_message(chat_id=person_id, text=text, reply_markup=reply_markup)).start()
     else:
         text = f'Your User ID, {person_id}, already exists'
+        Thread(target=lambda: context.bot.send_message(chat_id=person_id, text=text)).start()
 
-    Thread(target=lambda: context.bot.send_message(chat_id=person_id, text=text, reply_markup=reply_markup)).start()
     return ConversationHandler.END
