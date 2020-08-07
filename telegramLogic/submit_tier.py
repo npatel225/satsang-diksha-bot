@@ -1,4 +1,7 @@
-from telegram import Update, User, CallbackQuery
+from threading import Thread
+from typing import List
+
+from telegram import Update, User, CallbackQuery, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import CallbackContext, ConversationHandler
 
 from send_typing_action import send_typing_action
@@ -16,14 +19,19 @@ def submit_tier(update: Update, context: CallbackContext):
 
     person: User = update.effective_user
     person_id = person.id
+    message_dict = SheetMessages().message_dict()
 
     user_sheet = UserSheet()
 
+    custom_keyboard: List[List[KeyboardButton]] = list(map(lambda m: [KeyboardButton(text=m)], message_dict.get('info')))
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard, selective=True)
+    context.bot.delete_message(chat_id=person_id, message_id=query.message.message_id)
+
     if not user_sheet.uid_check(person_id):
         user_sheet.append_sheet([f'{person_id}', tier, phone_number])
-        message_dict = SheetMessages().message_dict()
-        query.edit_message_text(text=f'{message_dict.get(tier, "Error in getting challenge")}', )
+        text = f'{message_dict.get(tier, "Error in getting challenge")}'
     else:
-        query.edit_message_text(text=f'Your User ID, {person_id}, already exists')
+        text = f'Your User ID, {person_id}, already exists'
 
+    Thread(target=lambda: context.bot.send_message(chat_id=person_id, text=text, reply_markup=reply_markup)).start()
     return ConversationHandler.END

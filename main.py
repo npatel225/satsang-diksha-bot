@@ -12,6 +12,7 @@ from telegramLogic.announcement import announcement
 from telegramLogic.broadcast_announcement import broadcast_announcement
 from telegramLogic.broadcast_choose_challenge import broadcast_choose_challenge
 from telegramLogic.choose_tier import choose_challenge
+from telegramLogic.main_message_handler import main_message_handler
 from telegramLogic.share_number import share_number
 from telegramLogic.submit_tier import submit_tier
 
@@ -98,6 +99,11 @@ def main():
         },
         fallbacks=[CommandHandler('announcement', announcement)],
     )
+
+    message_handler = MessageHandler(Filters.text, main_message_handler)
+
+    telegram.add_handler(message_handler)
+
     telegram.add_handler(announcement_handler)
     telegram.dispatcher.add_error_handler(telegram.error_callback)
     telegram.execute()
