@@ -1,6 +1,6 @@
 from functools import wraps
 
-LIST_OF_ADMINS = {263366770, 89505043}
+LIST_OF_ADMINS = {263366770, 89505043, 10721297, 180519325}
 
 
 def restricted_command(func):
@@ -11,4 +11,5 @@ def restricted_command(func):
             print("Unauthorized access denied for {}.".format(user_id))
             return
         return func(update, context, *args, **kwargs)
+
     return wrapped
