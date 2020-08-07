@@ -20,5 +20,10 @@ class UserSheet(SheetCore):
         else:
             return (person[0] for person in self.sheet.get_all_values()[1:] if person[1] == challenge)
 
+    def get_tier(self, uid: int):
+        for person in self.sheet.get_all_values()[1:]:
+            if person[0] == f'{uid}':
+                return person[1]
+
     def uid_check(self, uid: int):
         return f'{uid}' in set(self.get_challenge_uids())

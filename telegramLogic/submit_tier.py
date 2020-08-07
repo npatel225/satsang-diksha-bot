@@ -13,7 +13,7 @@ from sheetLogic.user_sheet import UserSheet
 def submit_tier(update: Update, context: CallbackContext):
     query: CallbackQuery = update.callback_query
 
-    tier = query.data
+    tier: str = query.data
     context.user_data.update({'tier': tier})
     phone_number = context.user_data.get('phone_number', '')
 
@@ -28,12 +28,12 @@ def submit_tier(update: Update, context: CallbackContext):
     if not user_sheet.uid_check(person_id):
         user_sheet.append_sheet([f'{person_id}', tier, phone_number])
         text = f'{message_dict.get(tier, "Error in getting challenge")}'
-        custom_keyboard: List[List[KeyboardButton]] = list(
-            map(lambda m: [KeyboardButton(text=f'{m} - {tier}')], message_dict.get('info')))
-        reply_markup = ReplyKeyboardMarkup(custom_keyboard, selective=True)
-        Thread(target=lambda: context.bot.send_message(chat_id=person_id, text=text, reply_markup=reply_markup)).start()
     else:
+        tier = user_sheet.get_tier(person_id)
         text = f'Your User ID, {person_id}, already exists'
-        Thread(target=lambda: context.bot.send_message(chat_id=person_id, text=text)).start()
 
+    custom_keyboard: List[List[KeyboardButton]] = list(
+        map(lambda m: [KeyboardButton(text=f'{m} - {tier}')], message_dict.get('info')))
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard, selective=True)
+    Thread(target=lambda: context.bot.send_message(chat_id=person_id, text=text, reply_markup=reply_markup)).start()
     return ConversationHandler.END
