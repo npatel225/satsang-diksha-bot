@@ -8,9 +8,12 @@ from telegram.error import Unauthorized, BadRequest, TimedOut, NetworkError, Cha
 from telegram.ext import Dispatcher, Updater, Handler, CallbackContext, ConversationHandler, CommandHandler, \
     MessageHandler, Filters, CallbackQueryHandler
 
-from telegramLogic.announcement import announcement
-from telegramLogic.broadcast_announcement import broadcast_announcement
-from telegramLogic.broadcast_choose_challenge import broadcast_choose_challenge
+from telegramLogic.announcement.announcement import announcement
+from telegramLogic.announcement.broadcast_announcement import broadcast_announcement
+from telegramLogic.announcement.broadcast_choose_challenge import broadcast_choose_challenge
+from telegramLogic.announcement.broadcast_document import broadcast_document
+from telegramLogic.announcement.broadcast_image import broadcast_image
+from telegramLogic.announcement.broadcast_video import broadcast_video
 from telegramLogic.choose_tier import choose_challenge
 from telegramLogic.main_message_handler import main_message_handler
 from telegramLogic.share_number import share_number
@@ -95,16 +98,21 @@ def main():
         entry_points=[CommandHandler('announcement', announcement)],
         states={
             '/challenge': [CallbackQueryHandler(broadcast_choose_challenge)],
-            '/announcement': [MessageHandler(Filters.text, broadcast_announcement)]
+            '/announcement': [
+                MessageHandler(Filters.text, broadcast_announcement),
+                MessageHandler(Filters.document, broadcast_document),
+                MessageHandler(Filters.photo, broadcast_image),
+                MessageHandler(Filters.video, broadcast_video),
+            ]
         },
         fallbacks=[CommandHandler('announcement', announcement)],
     )
+    telegram.add_handler(announcement_handler)
 
     message_handler = MessageHandler(Filters.text, main_message_handler)
 
     telegram.add_handler(message_handler)
 
-    telegram.add_handler(announcement_handler)
     telegram.dispatcher.add_error_handler(telegram.error_callback)
     telegram.execute()
 

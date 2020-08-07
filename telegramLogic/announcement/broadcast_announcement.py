@@ -1,8 +1,7 @@
-import telegram
+from threading import Thread
+
 from telegram import Update, Message
 from telegram.ext import CallbackContext, ConversationHandler
-
-from threading import Thread
 
 from restricted_command import restricted_command
 from sheetLogic.user_sheet import UserSheet
