@@ -16,7 +16,7 @@ class TierLogic(SheetCore):
         return {tier: self.get_sheet(tier) for tier in self.tiers}
 
     def get_today_data(self):
-        today_data: Dict[str, List[Tuple[str, str]]] = defaultdict(list)
+        today_data: Dict[str, List[Tuple[str, str, str]]] = defaultdict(list)
         for challenge, tier_sheet in self.challenge_sheets.items():
             for data in tier_sheet.get_all_values()[1:]:
                 try:
@@ -24,6 +24,7 @@ class TierLogic(SheetCore):
                         today_data[challenge].append(
                             (data[MessageEnum.VIDEO_LINK.value],
                              data[MessageEnum.GRAPHIC_LINK.value],
+                             data[MessageEnum.MESSAGE.value],
                              )
                         )
                 except ValueError:

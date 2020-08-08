@@ -13,7 +13,7 @@ def daily_diksha_message():
     token = os.getenv('TELEGRAM_TOKEN')
     bot: Bot = Bot(token)
     tier_logic = TierLogic()
-    data: Dict[str, List[Tuple[str, str]]] = tier_logic.get_today_data()
+    data: Dict[str, List[Tuple[str, str, str]]] = tier_logic.get_today_data()
 
     cron_logic = CronLogic()
     users = cron_logic.users()
@@ -29,6 +29,12 @@ def daily_diksha_message():
                 if message[1]:
                     thread = Thread(
                         target=lambda: bot.send_document(user_id, message[1], caption=f'{date.today()}'))
+                    thread.start()
+                    threads.append(thread)
+                if message[2]:
+                    thread = Thread(
+                        target=lambda: bot.send_message(user_id, message[2])
+                    )
                     thread.start()
                     threads.append(thread)
     [thread.join() for thread in threads]
