@@ -21,14 +21,16 @@ def daily_diksha_message():
     for challenge, messages in data.items():
         for user_id in users[challenge]:
             for message in messages:
-                caption = f'{date.today()}\n\n{message[1]}'
                 if message[0]:
                     thread = Thread(
-                        target=lambda: bot.send_document(user_id, message[0], caption=caption))
-                else:
-                    thread = Thread(target=lambda: bot.send_message(user_id, text=caption))
-                thread.start()
-                threads.append(thread)
+                        target=lambda: bot.send_document(user_id, message[0]))
+                    thread.start()
+                    threads.append(thread)
+                if message[1]:
+                    thread = Thread(
+                        target=lambda: bot.send_document(user_id, message[1], caption=f'{date.today()}'))
+                    thread.start()
+                    threads.append(thread)
     [thread.join() for thread in threads]
 
 

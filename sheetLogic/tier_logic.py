@@ -22,8 +22,8 @@ class TierLogic(SheetCore):
                 try:
                     if datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y').date() == date.today():
                         today_data[challenge].append(
-                            (data[MessageEnum.AUDIO_LINK.value],
-                             f'{data[MessageEnum.GUJARATI_MESSAGE.value]}\n\n{data[MessageEnum.ENGLISH_MESSAGE.value]}',
+                            (data[MessageEnum.VIDEO_LINK.value],
+                             data[MessageEnum.GRAPHIC_LINK.value],
                              )
                         )
                 except ValueError:
