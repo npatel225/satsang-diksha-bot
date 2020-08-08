@@ -2,26 +2,30 @@ from collections import defaultdict
 from datetime import datetime, date
 from typing import Dict, List, Tuple
 from gspread import Worksheet
+
+from enums.MessageEnum import MessageEnum
 from sheetLogic.sheet_core import SheetCore
 
-DATE = 0
-GUJARATI_MESSAGE = 1
-ENGLISH_MESSAGE = 2
-AUDIO_LINK = 3
 
 class TierLogic(SheetCore):
     def __init__(self):
         super().__init__()
-        self.tier_sheets: Dict[str, Worksheet] = self.get_sheets()
+        self.challenge_sheets: Dict[str, Worksheet] = self.get_sheets()
 
     def get_sheets(self):
         return {tier: self.get_sheet(tier) for tier in self.tiers}
 
     def get_today_data(self):
-        today_data: Dict[str, List[str]] = defaultdict(list)
-        for tier, tier_sheet in self.tier_sheets.items():
+        today_data: Dict[str, List[Tuple[str, str]]] = defaultdict(list)
+        for challenge, tier_sheet in self.challenge_sheets.items():
             for data in tier_sheet.get_all_values()[1:]:
-                if datetime.strptime(data[DATE], '%m/%d/%Y').date() == date.today():
-                    today_data[tier].append(
-                        f'{data[GUJARATI_MESSAGE]}\n\n{data[ENGLISH_MESSAGE]}\n\n{data[AUDIO_LINK]}')
+                try:
+                    if datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y').date() == date.today():
+                        today_data[challenge].append(
+                            (data[MessageEnum.AUDIO_LINK.value],
+                             f'{data[MessageEnum.GUJARATI_MESSAGE.value]}\n\n{data[MessageEnum.ENGLISH_MESSAGE.value]}',
+                             )
+                        )
+                except ValueError:
+                    pass
         return today_data
