@@ -23,12 +23,12 @@ def daily_diksha_message():
             for message in messages:
                 if message[0]:
                     thread = Thread(
-                        target=lambda: bot.send_document(user_id, message[0]))
+                        target=lambda: bot.send_document(user_id, message[0], caption=f'{date.today()}'))
                     thread.start()
                     threads.append(thread)
                 if message[1]:
                     thread = Thread(
-                        target=lambda: bot.send_document(user_id, message[1], caption=f'{date.today()}'))
+                        target=lambda: bot.send_document(user_id, message[1]))
                     thread.start()
                     threads.append(thread)
                 if message[2]:
