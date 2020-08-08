@@ -1,13 +1,12 @@
 from collections import defaultdict
 from datetime import datetime, date
-from typing import Dict, List, Tuple
+from typing import Dict, List
+
 from gspread import Worksheet
+
+from enums.messageEnum import messageEnum
 from sheetLogic.sheet_core import SheetCore
 
-DATE = 0
-GUJARATI_MESSAGE = 1
-ENGLISH_MESSAGE = 2
-AUDIO_LINK = 3
 
 class TierLogic(SheetCore):
     def __init__(self):
@@ -21,7 +20,7 @@ class TierLogic(SheetCore):
         today_data: Dict[str, List[str]] = defaultdict(list)
         for tier, tier_sheet in self.tier_sheets.items():
             for data in tier_sheet.get_all_values()[1:]:
-                if datetime.strptime(data[DATE], '%m/%d/%Y').date() == date.today():
+                if datetime.strptime(data[messageEnum.DATE], '%m/%d/%Y').date() == date.today():
                     today_data[tier].append(
-                        f'{data[GUJARATI_MESSAGE]}\n\n{data[ENGLISH_MESSAGE]}\n\n{data[AUDIO_LINK]}')
+                        f'{data[messageEnum.GUJARATI_MESSAGE]}\n\n{data[messageEnum.ENGLISH_MESSAGE]}\n\n{data[messageEnum.AUDIO_LINK]}')
         return today_data
