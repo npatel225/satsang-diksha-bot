@@ -5,7 +5,7 @@ from sheetLogic.sheet_config import SheetConfig
 class SheetCore(SheetConfig):
     def __init__(self):
         super().__init__()
-        self.spreadsheet = self.login().open_by_key('1R86uo07qmaUl96fymiNXFsGtJuO3RnlDIXWiGius1cM')
+        self.spreadsheet = self.login().open_by_key(self.sheet_id)
 
     @staticmethod
     def login():
