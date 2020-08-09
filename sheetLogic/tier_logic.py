@@ -1,3 +1,4 @@
+import logging
 from collections import defaultdict
 from datetime import datetime, date
 from typing import Dict, List, Tuple
@@ -17,7 +18,9 @@ class TierLogic(SheetCore):
 
     def get_today_data(self):
         today_data: Dict[str, List[Tuple[str, str, str]]] = defaultdict(list)
+        logging.debug(self.challenge_sheets.items())
         for challenge, tier_sheet in self.challenge_sheets.items():
+            logging.debug(challenge)
             for data in tier_sheet.get_all_values()[1:]:
                 try:
                     if datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y').date() == date.today():

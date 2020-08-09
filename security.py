@@ -1,5 +1,7 @@
+import logging
 from os import getenv
 from cryptography.fernet import Fernet
+
 
 class Security:
 
@@ -33,4 +35,5 @@ class Security:
         encrypted = fernet.decrypt(data)
 
         with open(output_file, 'wb') as f:
+            logging.debug(f"Encrypted, {encrypted}")
             f.write(encrypted)
