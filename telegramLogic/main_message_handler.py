@@ -13,6 +13,4 @@ def main_message_handler(update: Update, context: CallbackContext):
 
     # m = message_dict.get(message.text, "Please run `/start` again")
     # if
-    print(message.text, message_dict.get(message.text, "Please run `/start` again"))
-    message.reply_text(text=message_dict.get(message.text, "Please run `/start` again"),
-                       parse_mode=telegram.ParseMode.MARKDOWN_V2)
+    message.reply_text(text=message_dict.get(message.text, "Please run `/start` again"))
