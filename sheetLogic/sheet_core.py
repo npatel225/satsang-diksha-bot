@@ -1,8 +1,30 @@
+import functools
+from datetime import timedelta, datetime
 from functools import lru_cache
 
 import gspread
 from security import Security
 from sheetLogic.sheet_config import SheetConfig
+
+
+def cache(seconds: int, maxsize: int = 128, typed: bool = False):
+    def wrapper_cache(func):
+        func = lru_cache(maxsize=maxsize, typed=typed)(func)
+        func.delta = timedelta(seconds=seconds)
+        func.expiration = datetime.utcnow() + func.delta
+
+        @functools.wraps(func)
+        def wrapped_func(*args, **kwargs):
+            if datetime.utcnow() >= func.expiration:
+                func.cache_clear()
+                func.expiration = datetime.utcnow() + func.delta
+
+            return func(*args, **kwargs)
+
+        return wrapped_func
+
+    return wrapper_cache
+
 
 class SheetCore(SheetConfig):
     def __init__(self):
@@ -10,7 +32,7 @@ class SheetCore(SheetConfig):
         self.spreadsheet = self.login.open_by_key(self.sheet_id)
 
     @property
-    @lru_cache(maxsize=None)
+    @cache(100)
     def login(self):
         security = Security()
         security.decrypt_cred()
