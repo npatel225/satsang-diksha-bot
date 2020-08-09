@@ -38,7 +38,7 @@ def submit_tier(update: Update, context: CallbackContext):
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
-                document='https://baps.box.com/shared/static/xt65g3aqt8nokzb75t0v8uywtrkhopt4.pdf')).start()
+                document='https://baps.box.com/shared/static/7drpp40u7wnu8fvmhuy0o8etw4dpvlbb.pdf')).start()
         elif tier == 'Pramukh':
             # Thread(target=lambda: context.bot.send_message(
             #     chat_id=person_id,
