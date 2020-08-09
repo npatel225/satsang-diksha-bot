@@ -1,4 +1,5 @@
 import os
+from time import sleep
 from datetime import date
 from threading import Thread
 from typing import List, Dict, Tuple
@@ -10,7 +11,7 @@ from sheetLogic.tier_logic import TierLogic
 
 
 def parse_message(bot: Bot, user_id: str, messages: List[Tuple[str, str, str, str]]):
-    for message in messages:
+    for i, message in enumerate(messages):
         if message[0]:
             bot.send_document(user_id, message[0], caption=f'{date.today()}')
         if message[1]:
@@ -19,6 +20,7 @@ def parse_message(bot: Bot, user_id: str, messages: List[Tuple[str, str, str, st
             bot.send_document(user_id, message[2])
         if message[3]:
             bot.send_message(user_id, message[3])
+        sleep(i * 1)
 
 
 def daily_diksha_message():
