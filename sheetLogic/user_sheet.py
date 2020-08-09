@@ -35,6 +35,7 @@ class UserSheet(SheetCore):
         if row >= 0 and col >= 0:
             return self.sheet.update_cell(row, col, value)
         logging.info('User does not exist')
+        return -1
 
     def get_tier_from_uid(self, uid: int):
         print('getting tier', uid)
