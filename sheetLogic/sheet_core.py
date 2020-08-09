@@ -1,29 +1,14 @@
-import functools
-from datetime import timedelta, datetime
-from functools import lru_cache
+import logging
+from datetime import datetime
 
 import gspread
+
 from security import Security
 from sheetLogic.sheet_config import SheetConfig
+from SC import SERVICE_ACCOUNT
 
-
-def cache(seconds: int, maxsize: int = 128, typed: bool = False):
-    def wrapper_cache(func):
-        func = lru_cache(maxsize=maxsize, typed=typed)(func)
-        func.delta = timedelta(seconds=seconds)
-        func.expiration = datetime.utcnow() + func.delta
-
-        @functools.wraps(func)
-        def wrapped_func(*args, **kwargs):
-            if datetime.utcnow() >= func.expiration:
-                func.cache_clear()
-                func.expiration = datetime.utcnow() + func.delta
-
-            return func(*args, **kwargs)
-
-        return wrapped_func
-
-    return wrapper_cache
+token_file = "./access_token.txt"  # token file including the authorization data
+now = int(datetime.now().timestamp())
 
 
 class SheetCore(SheetConfig):
@@ -32,12 +17,21 @@ class SheetCore(SheetConfig):
         self.spreadsheet = self.login.open_by_key(self.sheet_id)
 
     @property
-    @cache(100)
     def login(self):
         security = Security()
         security.decrypt_cred()
+        # credentials = self.getCredential()
         scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file']
-        return gspread.service_account('./credentials.json', scopes=scopes)
+        global SERVICE_ACCOUNT
+
+        if SERVICE_ACCOUNT:
+            logging.info("SERVICE_ACCOUNT.auth.expired", SERVICE_ACCOUNT.auth.expired)
+            if SERVICE_ACCOUNT.auth.expired:
+                SERVICE_ACCOUNT = gspread.service_account('./credentials.json', scopes=scopes)
+            return SERVICE_ACCOUNT
+        else:
+            SERVICE_ACCOUNT = gspread.service_account('./credentials.json', scopes=scopes)
+            return SERVICE_ACCOUNT
 
     def get_sheet(self, title: str):
         return self.spreadsheet.worksheet(title=title)

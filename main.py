@@ -8,6 +8,7 @@ from telegram.error import Unauthorized, BadRequest, TimedOut, NetworkError, Cha
 from telegram.ext import Dispatcher, Updater, Handler, CallbackContext, ConversationHandler, CommandHandler, \
     MessageHandler, Filters, CallbackQueryHandler
 
+from SC import SERVICE_ACCOUNT
 from telegramLogic.announcement.announcement import announcement
 from telegramLogic.announcement.broadcast_announcement import broadcast_announcement
 from telegramLogic.announcement.broadcast_choose_challenge import broadcast_choose_challenge
@@ -18,6 +19,8 @@ from telegramLogic.choose_tier import choose_challenge
 from telegramLogic.main_message_handler import main_message_handler
 from telegramLogic.share_number import share_number
 from telegramLogic.submit_tier import submit_tier
+
+
 
 
 class Telegram:
