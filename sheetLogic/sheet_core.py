@@ -25,7 +25,7 @@ class SheetCore(SheetConfig):
         global SERVICE_ACCOUNT
 
         if SERVICE_ACCOUNT:
-            logging.info("SERVICE_ACCOUNT.auth.expired", SERVICE_ACCOUNT.auth.expired)
+            logging.info(f"SERVICE_ACCOUNT.auth.expired {SERVICE_ACCOUNT.auth.expired}")
             if SERVICE_ACCOUNT.auth.expired:
                 SERVICE_ACCOUNT = gspread.service_account('./credentials.json', scopes=scopes)
             return SERVICE_ACCOUNT
