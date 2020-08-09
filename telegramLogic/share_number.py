@@ -7,7 +7,7 @@ from sheetLogic.sheet_messages import SheetMessages
 
 @send_typing_action
 def share_number(update: Update, context: CallbackContext):
-    contact_keyboard = KeyboardButton(text="send_contact", request_contact=True)
+    contact_keyboard = KeyboardButton(text="Send Contact Information", request_contact=True)
     custom_keyboard = [[contact_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, one_time_keyboard=True)
 

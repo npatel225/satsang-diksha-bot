@@ -1,4 +1,7 @@
+import logging
 from typing import List
+
+from gspread import CellNotFound
 
 from sheetLogic.sheet_core import SheetCore
 
@@ -27,3 +30,17 @@ class UserSheet(SheetCore):
 
     def uid_check(self, uid: int):
         return f'{uid}' in set(self.get_challenge_uids())
+
+    def update_cell(self, row, col, value):
+        if row >= 0 and col >= 0:
+            return self.sheet.update_cell(row, col, value)
+        logging.info('User does not exist')
+
+    def get_tier_from_uid(self, uid: int):
+        print('getting tier', uid)
+        try:
+            cell = self.sheet.find(f'{uid}')
+            print(cell.row, cell.col)
+            return cell.row, cell.col + 1
+        except CellNotFound:
+            return -1, -1
