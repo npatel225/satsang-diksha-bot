@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from functools import partial
 from threading import Thread
 
 from telegram import Update
@@ -19,8 +20,6 @@ from telegramLogic.choose_tier import choose_challenge
 from telegramLogic.main_message_handler import main_message_handler
 from telegramLogic.share_number import share_number
 from telegramLogic.submit_tier import submit_tier
-
-
 
 
 class Telegram:
@@ -111,6 +110,17 @@ def main():
         fallbacks=[CommandHandler('announcement', announcement)],
     )
     telegram.add_handler(announcement_handler)
+
+    edit_handler = ConversationHandler(
+        entry_points=[CommandHandler('edit', share_number)],
+        states={
+            '/choose_tier': [MessageHandler(Filters.contact, choose_challenge)],
+            '/tier': [CallbackQueryHandler(partial(submit_tier, edit=True))],
+        },
+        fallbacks=[CommandHandler('edit', share_number)],
+    )
+
+    telegram.add_handler(edit_handler)
 
     message_handler = MessageHandler(Filters.text, main_message_handler)
 

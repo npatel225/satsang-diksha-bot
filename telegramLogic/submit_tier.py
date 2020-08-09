@@ -1,3 +1,4 @@
+import logging
 from threading import Thread
 from typing import List
 
@@ -10,7 +11,7 @@ from sheetLogic.user_sheet import UserSheet
 
 
 @send_typing_action
-def submit_tier(update: Update, context: CallbackContext):
+def submit_tier(update: Update, context: CallbackContext, edit=False):
     query: CallbackQuery = update.callback_query
 
     tier: str = query.data
@@ -24,8 +25,16 @@ def submit_tier(update: Update, context: CallbackContext):
     user_sheet = UserSheet()
 
     context.bot.delete_message(chat_id=person_id, message_id=query.message.message_id)
-
-    if not user_sheet.uid_check(person_id):
+    if edit:
+        logging.info(f'Switching tier to: {tier}')
+        row, col = user_sheet.get_tier_from_uid(person_id)
+        if user_sheet.update_cell(row, col, tier) != -1:
+            text = f'{message_dict.get(tier, "Error in getting challenge")}'
+            logging.info(f'User: {person_id}, successfully changed tiers')
+        else:
+            text = f'We could not locate you. Please run `/start` to register'
+            logging.info(f'User does not exist: {person_id}')
+    elif not user_sheet.uid_check(person_id):
         user_sheet.append_sheet([f'{person_id}', tier, phone_number])
         text = f'{message_dict.get(tier, "Error in getting challenge")}'
         if tier == 'Mahant':
