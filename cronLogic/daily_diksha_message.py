@@ -9,15 +9,16 @@ from sheetLogic.cron_logic import CronLogic
 from sheetLogic.tier_logic import TierLogic
 
 
-def parse_message(bot: Bot, user_id: str, message: Tuple[str, str, str, str]):
-    if message[0]:
-        bot.send_document(user_id, message[0], caption=f'{date.today()}')
-    if message[1]:
-        bot.send_document(user_id, message[1])
-    if message[2]:
-        bot.send_document(user_id, message[2])
-    if message[3]:
-        bot.send_message(user_id, message[3])
+def parse_message(bot: Bot, user_id: str, messages: List[Tuple[str, str, str, str]]):
+    for message in messages:
+        if message[0]:
+            bot.send_document(user_id, message[0], caption=f'{date.today()}')
+        if message[1]:
+            bot.send_document(user_id, message[1])
+        if message[2]:
+            bot.send_document(user_id, message[2])
+        if message[3]:
+            bot.send_message(user_id, message[3])
 
 
 def daily_diksha_message():
@@ -31,10 +32,9 @@ def daily_diksha_message():
     threads = []
     for challenge, messages in data.items():
         for user_id in users[challenge]:
-            for message in messages:
-                thread = Thread(target=parse_message, args=(bot, user_id, message,))
-                thread.start()
-                threads.append(thread)
+            thread = Thread(target=parse_message, args=(bot, user_id, messages,))
+            thread.start()
+            threads.append(thread)
 
     [thread.join() for thread in threads]
 
