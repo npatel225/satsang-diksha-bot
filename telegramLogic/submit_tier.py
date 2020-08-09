@@ -32,6 +32,10 @@ def submit_tier(update: Update, context: CallbackContext):
             Thread(target=lambda: context.bot.send_message(
                 chat_id=person_id,
                 text='https://baps.box.com/s/oddym4elw4ukv6uv7c8npkyo38bmw826')).start()
+            Thread(target=lambda: context.bot.send_photo(
+                chat_id=person_id,
+                photo='https://baps.box.com/shared/static/c5yzyto2k5wgz8o6d251jypdlsh9lg72.jpg'
+            )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
                 document='https://baps.box.com/shared/static/xt65g3aqt8nokzb75t0v8uywtrkhopt4.pdf')).start()
@@ -39,6 +43,10 @@ def submit_tier(update: Update, context: CallbackContext):
             Thread(target=lambda: context.bot.send_message(
                 chat_id=person_id,
                 text='https://baps.box.com/s/n7jzempv7ps4y5rbskzq5b6g45hmfd7a')).start()
+            Thread(target=lambda: context.bot.send_photo(
+                chat_id=person_id,
+                photo='https://baps.box.com/shared/static/zu6tcropgdndw3k98ditbq9jzrq7hlah.jpg'
+            )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
                 document='https://baps.box.com/shared/static/4lip8e1511riapolm61g76gvof5jw601.pdf')).start()
@@ -46,6 +54,10 @@ def submit_tier(update: Update, context: CallbackContext):
             Thread(target=lambda: context.bot.send_message(
                 chat_id=person_id,
                 document='https://baps.box.com/s/0pd4k7gcrbui7qlow861uiojpxxc1qkr')).start()
+            Thread(target=lambda: context.bot.send_photo(
+                chat_id=person_id,
+                photo='https://baps.box.com/shared/static/6z9wfx7u2r3zfd9oqoygoxmmis19ids1.jpg'
+            )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
                 document='https://baps.box.com/shared/static/y05xpgl4xstubzvzhal111i95wwr6by6.pdf')).start()
@@ -53,6 +65,10 @@ def submit_tier(update: Update, context: CallbackContext):
             Thread(target=lambda: context.bot.send_message(
                 chat_id=person_id,
                 document='https://baps.box.com/s/r5hupned1xzbtbf3dx3hbs8lltvt48vw')).start()
+            Thread(target=lambda: context.bot.send_photo(
+                chat_id=person_id,
+                photo='https://baps.box.com/shared/static/1bscj9nuod2pvktdlrst55lmj0smaee3.jpg'
+            )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
                 document='https://baps.box.com/shared/static/auvtp12v83dc91qun2blgtz0nfcusdxh.pdf')).start()
