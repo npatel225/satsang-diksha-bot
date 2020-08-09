@@ -14,7 +14,7 @@ class TierLogic(SheetCore):
         self.challenge_sheets: Dict[str, Worksheet] = self.get_sheets()
 
     def get_sheets(self):
-        return {tier: super().get_sheet(tier) for tier in self.tiers}
+        return {tier: self.get_sheet(tier) for tier in self.tiers}
 
     def get_today_data(self):
         today_data: Dict[str, List[Tuple[str, str, str]]] = defaultdict(list)
