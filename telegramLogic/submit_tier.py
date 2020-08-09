@@ -34,7 +34,7 @@ def submit_tier(update: Update, context: CallbackContext):
             #     text='https://baps.box.com/s/oddym4elw4ukv6uv7c8npkyo38bmw826')).start()
             Thread(target=lambda: context.bot.send_photo(
                 chat_id=person_id,
-                photo='https://baps.box.com/shared/static/c5yzyto2k5wgz8o6d251jypdlsh9lg72.jpg'
+                photo='https://baps.box.com/shared/static/y72d037zjyfy9tk1awagtjmd6atr8i35.jpg'
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
@@ -45,7 +45,7 @@ def submit_tier(update: Update, context: CallbackContext):
             #     text='https://baps.box.com/s/n7jzempv7ps4y5rbskzq5b6g45hmfd7a')).start()
             Thread(target=lambda: context.bot.send_photo(
                 chat_id=person_id,
-                photo='https://baps.box.com/shared/static/zu6tcropgdndw3k98ditbq9jzrq7hlah.jpg'
+                photo='https://baps.box.com/shared/static/zqt5mckhhwbkml7gzqnrd4a52ovojaux.jpg'
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
@@ -56,7 +56,7 @@ def submit_tier(update: Update, context: CallbackContext):
             #     document='https://baps.box.com/s/0pd4k7gcrbui7qlow861uiojpxxc1qkr')).start()
             Thread(target=lambda: context.bot.send_photo(
                 chat_id=person_id,
-                photo='https://baps.box.com/shared/static/6z9wfx7u2r3zfd9oqoygoxmmis19ids1.jpg'
+                photo='https://baps.box.com/shared/static/n6nkf7tqj1z3587o5x4tmsh7awgp0hyi.jpg'
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
@@ -67,7 +67,7 @@ def submit_tier(update: Update, context: CallbackContext):
             #     document='https://baps.box.com/s/r5hupned1xzbtbf3dx3hbs8lltvt48vw')).start()
             Thread(target=lambda: context.bot.send_photo(
                 chat_id=person_id,
-                photo='https://baps.box.com/shared/static/1bscj9nuod2pvktdlrst55lmj0smaee3.jpg'
+                photo='https://baps.box.com/shared/static/fdqym3f6centtgeqai0km6cwlu4rovbt.jpg'
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
