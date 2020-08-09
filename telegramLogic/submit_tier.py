@@ -28,6 +28,18 @@ def submit_tier(update: Update, context: CallbackContext):
     if not user_sheet.uid_check(person_id):
         user_sheet.append_sheet([f'{person_id}', tier, phone_number])
         text = f'{message_dict.get(tier, "Error in getting challenge")}'
+        if tier == 'Mahant':
+            Thread(target=lambda: context.bot.send_message(chat_id=person_id,
+                                                           text='https://baps.box.com/s/oddym4elw4ukv6uv7c8npkyo38bmw826')).start()
+        elif tier == 'Pramukh':
+            Thread(target=lambda: context.bot.send_message(chat_id=person_id,
+                                                           text='https://baps.box.com/s/n7jzempv7ps4y5rbskzq5b6g45hmfd7a')).start()
+        elif tier == 'Yogi':
+            Thread(target=lambda: context.bot.send_message(chat_id=person_id,
+                                                           text='https://baps.box.com/s/0pd4k7gcrbui7qlow861uiojpxxc1qkr')).start()
+        elif tier == 'Shastriji':
+            Thread(target=lambda: context.bot.send_message(chat_id=person_id,
+                                                           text='https://baps.box.com/s/r5hupned1xzbtbf3dx3hbs8lltvt48vw')).start()
     else:
         tier = user_sheet.get_tier(person_id)
         text = f'Your User ID, {person_id}, already exists'

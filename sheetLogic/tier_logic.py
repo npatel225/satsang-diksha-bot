@@ -1,4 +1,3 @@
-import logging
 from collections import defaultdict
 from datetime import datetime, date
 from typing import Dict, List, Tuple
@@ -16,17 +15,16 @@ class TierLogic(SheetCore):
     def get_sheets(self):
         return {tier: self.get_sheet(tier) for tier in self.tiers}
 
-    def get_today_data(self):
-        today_data: Dict[str, List[Tuple[str, str, str]]] = defaultdict(list)
-        logging.debug(self.challenge_sheets.items())
+    def get_today_data(self) -> Dict[str, List[Tuple[str, str, str, str]]]:
+        today_data: Dict[str, List[Tuple[str, str, str, str]]] = defaultdict(list)
         for challenge, tier_sheet in self.challenge_sheets.items():
-            logging.debug(challenge)
             for data in tier_sheet.get_all_values()[1:]:
                 try:
                     if datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y').date() == date.today():
                         today_data[challenge].append(
                             (data[MessageEnum.VIDEO_LINK.value],
                              data[MessageEnum.GRAPHIC_LINK.value],
+                             data[MessageEnum.MOTIVATIONAL_LINK.value],
                              data[MessageEnum.MESSAGE.value],
                              )
                         )
