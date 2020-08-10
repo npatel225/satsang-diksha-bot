@@ -34,7 +34,7 @@ class Telegram:
         if not self.token:
             self.token = os.environ.get('TELEGRAM_TOKEN')
 
-        self.updater = Updater(self.token, use_context=True)
+        self.updater = Updater(self.token, workers=10, use_context=True)
         self.dispatcher = self.updater.dispatcher
 
     def add_handler(self, handler: Handler):
