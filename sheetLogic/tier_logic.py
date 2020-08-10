@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import Dict, List, Tuple
 from gspread import Worksheet
 
@@ -15,12 +15,12 @@ class TierLogic(SheetCore):
     def get_sheets(self):
         return {tier: self.get_sheet(tier) for tier in self.tiers}
 
-    def get_today_data(self) -> Dict[str, List[Tuple[str, str, str, str]]]:
+    def get_today_data(self, hour_delta=0) -> Dict[str, List[Tuple[str, str, str, str]]]:
         today_data: Dict[str, List[Tuple[str, str, str, str]]] = defaultdict(list)
         for challenge, tier_sheet in self.challenge_sheets.items():
             for data in tier_sheet.get_all_values()[1:]:
                 try:
-                    if datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y').date() == date.today():
+                    if datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y').date() == date.today() - timedelta(hours=hour_delta):
                         today_data[challenge].append(
                             (data[MessageEnum.VIDEO_LINK.value],
                              data[MessageEnum.GRAPHIC_LINK.value],
