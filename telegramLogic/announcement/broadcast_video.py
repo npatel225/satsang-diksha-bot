@@ -1,7 +1,8 @@
-from threading import Thread
+import logging
 from time import sleep
 
 from telegram import Update, Message
+from telegram.error import Unauthorized
 from telegram.ext import CallbackContext, ConversationHandler, run_async
 
 from restricted_command import restricted_command
@@ -22,9 +23,12 @@ def broadcast_video(update: Update, context: CallbackContext):
         challenge = None
 
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        if i != 0 and i % 25 == 0:
-            sleep(100)
-        if video := message.video:
-            single_broadcast(context, uid, video, message)
+        try:
+            if i != 0 and i % 25 == 0:
+                sleep(100)
+            if video := message.video:
+                single_broadcast(context, uid, video, message)
+        except Unauthorized:
+            logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
 
     return ConversationHandler.END
