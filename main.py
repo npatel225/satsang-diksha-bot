@@ -36,7 +36,7 @@ def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[s
             context.bot.send_document(user_id, message[2])
         if message[3]:
             context.bot.send_message(user_id, message[3])
-        sleep(i * 60)
+        sleep(60)
 
 
 def daily_message(context: CallbackContext):
@@ -52,7 +52,7 @@ def daily_message(context: CallbackContext):
         for i, user_id in enumerate(users[challenge]):
             if i != 0 and i % 20 == 0:
                 logging.info('Sleeping Peacefully')
-                sleep(180)
+                sleep(120)
             parse_message(context, user_id, messages)
 
 
