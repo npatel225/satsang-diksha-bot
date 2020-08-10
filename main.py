@@ -1,11 +1,9 @@
 import logging
 from functools import partial
 from datetime import datetime, date, time
-from os import getenv
 from time import sleep
 from typing import Dict, List, Tuple
 
-from pytz import timezone
 
 from telegram.ext import CallbackContext, ConversationHandler, CommandHandler, \
     MessageHandler, Filters, CallbackQueryHandler, JobQueue, run_async
@@ -65,8 +63,8 @@ def main():
     telegram.initialize()
 
     job_queue: JobQueue = telegram.job_queue
-    logging.info(f'Time Right now: {datetime.now()} Timezone: {getenv("TZ")}')
-    job_queue.run_daily(daily_message, time=time(hour=14, minute=5, tzinfo=timezone(getenv('TZ', 'US/Eastern'))))
+    logging.info(f'Time Right now: {datetime.now()}')
+    job_queue.run_daily(daily_message, time=time(hour=14, minute=25))
 
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', share_number)],
