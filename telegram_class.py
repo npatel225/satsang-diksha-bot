@@ -23,8 +23,8 @@ class Telegram:
             self.token = os.environ.get('TELEGRAM_TOKEN')
 
         self.updater = Updater(self.token, workers=10, use_context=True)
-        self.job_queue = self.updater.job_queue
         self.dispatcher = self.updater.dispatcher
+        self.job_queue = self.dispatcher.job_queue
 
     def add_handler(self, handler: Handler):
         self.dispatcher.add_handler(handler)
