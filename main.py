@@ -4,7 +4,6 @@ from datetime import datetime, date, time
 from time import sleep
 from typing import Dict, List, Tuple
 
-
 from telegram.ext import CallbackContext, ConversationHandler, CommandHandler, \
     MessageHandler, Filters, CallbackQueryHandler, JobQueue, run_async
 
@@ -50,10 +49,13 @@ def daily_message(context: CallbackContext):
     logging.info(f'{users}\n {data}')
     for challenge, messages in data.items():
         for i, user_id in enumerate(users[challenge]):
+            logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
             if i != 0 and i % 20 == 0:
                 logging.info('Sleeping Peacefully')
                 sleep(120)
+                logging.info('Slept Peacefully')
             parse_message(context, user_id, messages)
+    logging.info('Daily Message Done Sending')
 
 
 def main():
