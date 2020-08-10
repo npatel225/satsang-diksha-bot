@@ -1,4 +1,5 @@
 from threading import Thread
+from time import sleep
 
 from telegram import Update, Message
 from telegram.ext import CallbackContext, ConversationHandler, run_async
@@ -19,7 +20,9 @@ def broadcast_announcement(update: Update, context: CallbackContext):
     challenge = context.user_data.get('broadcast_challenge', 'All')
     if challenge == 'All':
         challenge = None
-    for uid in user_sheet.get_challenge_uids(challenge=challenge):
+    for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
+        if i != 0 and i % 25 == 0:
+            sleep(30)
         single_message_broadcast(context, uid, message.text)
 
     return ConversationHandler.END
