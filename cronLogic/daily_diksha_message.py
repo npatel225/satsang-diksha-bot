@@ -25,9 +25,10 @@ def parse_message(bot: Bot, user_id: str, messages: List[Tuple[str, str, str, st
 
 def daily_diksha_message():
     token = os.getenv('TELEGRAM_TOKEN')
+    hour_delta = 0 if token != '1220599633:AAGjai-ggBzAWRUAP6k0bT5ym6WpcXPIpTI' else 15
     bot: Bot = Bot(token)
     tier_logic = TierLogic()
-    data: Dict[str, List[Tuple[str, str, str, str]]] = tier_logic.get_today_data()
+    data: Dict[str, List[Tuple[str, str, str, str]]] = tier_logic.get_today_data(hour_delta=hour_delta)
 
     cron_logic = CronLogic()
     users = cron_logic.users()
