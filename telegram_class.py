@@ -22,7 +22,8 @@ class Telegram:
         if not self.token:
             self.token = os.environ.get('TELEGRAM_TOKEN')
 
-        self.updater = Updater(self.token, workers=10, use_context=True)
+        self.updater = Updater(self.token, workers=10, use_context=True,
+                               request_kwargs={'read_timeout': 20, 'connect_timeout': 20})
         self.dispatcher = self.updater.dispatcher
         self.job_queue = self.dispatcher.job_queue
 

@@ -5,6 +5,7 @@ from os import getenv
 from time import sleep
 from typing import Dict, List, Tuple
 
+from telegram.error import Unauthorized
 from telegram.ext import CallbackContext, ConversationHandler, CommandHandler, \
     MessageHandler, Filters, CallbackQueryHandler, JobQueue, run_async
 
@@ -26,17 +27,20 @@ from telegram_class import Telegram
 
 @run_async
 def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[str, str, str, str]]):
-    for i, message in enumerate(messages):
-        logging.info(f'Sending a Message: {user_id}')
-        if message[0]:
-            context.bot.send_document(user_id, message[0], caption=f'{date.today()}')
-        if message[1]:
-            context.bot.send_document(user_id, message[1])
-        if message[2]:
-            context.bot.send_document(user_id, message[2])
-        if message[3]:
-            context.bot.send_message(user_id, message[3])
-        sleep(60)
+    try:
+        for i, message in enumerate(messages):
+            logging.info(f'Sending a Message: {user_id}')
+            if message[0]:
+                context.bot.send_document(user_id, message[0], caption=f'{date.today()}')
+            if message[1]:
+                context.bot.send_document(user_id, message[1])
+            if message[2]:
+                context.bot.send_document(user_id, message[2])
+            if message[3]:
+                context.bot.send_message(user_id, message[3])
+            sleep(60)
+    except Unauthorized:
+        logging.error(f'USER ID has Blocked the Bot. Delete them: {user_id}')
 
 
 def daily_message(context: CallbackContext):
@@ -53,11 +57,11 @@ def daily_message(context: CallbackContext):
             logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
             if i != 0 and i % 20 == 0:
                 logging.info('Sleeping Peacefully')
-                sleep(200)
+                sleep(30)
                 logging.info('Slept Peacefully')
             parse_message(context, user_id, messages)
         logging.info('New Message, Now Sleeping')
-        sleep(60)
+        sleep(320)
         logging.info('New Message, Done Sleeping')
     logging.info('Daily Message Done Sending')
 
