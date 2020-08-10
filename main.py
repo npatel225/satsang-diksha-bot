@@ -1,6 +1,7 @@
 import logging
 from functools import partial
 from datetime import datetime, date, time
+from os import getenv
 from time import sleep
 from typing import Dict, List, Tuple
 
@@ -66,7 +67,7 @@ def main():
 
     job_queue: JobQueue = telegram.job_queue
     logging.info(f'Time Right now: {datetime.now()}')
-    job_queue.run_daily(daily_message, time=time(hour=18, minute=55))
+    job_queue.run_daily(daily_message, time=time(hour=int(getenv('HOUR')), minute=int(getenv('MINUTE'))))
 
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', share_number)],
