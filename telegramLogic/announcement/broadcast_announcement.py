@@ -11,8 +11,10 @@ from sheetLogic.user_sheet import UserSheet
 
 @run_async
 def single_message_broadcast(context, uid, text):
-    context.bot.send_message(chat_id=uid, text=text, )
-
+    try:
+        context.bot.send_message(chat_id=uid, text=text, )
+    except Unauthorized:
+        logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
 
 @restricted_command
 def broadcast_announcement(update: Update, context: CallbackContext):
@@ -22,11 +24,8 @@ def broadcast_announcement(update: Update, context: CallbackContext):
     if challenge == 'All':
         challenge = None
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        try:
-            if i != 0 and i % 25 == 0:
-                sleep(100)
-            single_message_broadcast(context, uid, message.text)
-        except Unauthorized:
-            logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
+        if i != 0 and i % 25 == 0:
+            sleep(100)
+        single_message_broadcast(context, uid, message.text)
 
     return ConversationHandler.END

@@ -11,7 +11,10 @@ from sheetLogic.user_sheet import UserSheet
 
 @run_async
 def single_broadcast(context, uid, photo, message):
-    context.bot.send_photo(uid, photo.file_id, caption=message.caption)
+    try:
+        context.bot.send_photo(uid, photo.file_id, caption=message.caption)
+    except Unauthorized:
+        logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
 
 
 @restricted_command
@@ -23,13 +26,10 @@ def broadcast_image(update: Update, context: CallbackContext):
         challenge = None
 
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        try:
-            if i != 0 and i % 25 == 0:
-                sleep(100)
-            if photos := message.photo:
-                for photo in photos:
-                    single_broadcast(context, uid, photo, message)
-        except Unauthorized:
-            logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
+        if i != 0 and i % 25 == 0:
+            sleep(100)
+        if photos := message.photo:
+            for photo in photos:
+                single_broadcast(context, uid, photo, message)
 
     return ConversationHandler.END
