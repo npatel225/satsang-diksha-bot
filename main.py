@@ -66,7 +66,7 @@ def main():
 
     job_queue: JobQueue = telegram.job_queue
     logging.info(f'Time Right now: {datetime.now()}\n Timezone: {getenv("TZ")}')
-    job_queue.run_daily(daily_message, time=time(hour=13, minute=48, tzinfo=getenv('TZ')))
+    job_queue.run_daily(daily_message, time=time(hour=14, minute=1, tzinfo=getenv('TZ')))
 
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', share_number)],
