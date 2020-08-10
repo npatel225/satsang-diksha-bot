@@ -64,7 +64,7 @@ def main():
     telegram.initialize()
 
     job_queue: JobQueue = telegram.job_queue
-    logging.info(f'{datetime.now()}')
+    logging.info(f'{datetime.now(tz=timezone("US/Eastern"))}')
     job_queue.run_daily(daily_message, time=time(hour=1, minute=25, tzinfo=timezone('US/Eastern')))
 
     start_handler = ConversationHandler(
