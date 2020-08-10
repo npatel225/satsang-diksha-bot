@@ -20,7 +20,7 @@ def parse_message(bot: Bot, user_id: str, messages: List[Tuple[str, str, str, st
             bot.send_document(user_id, message[2])
         if message[3]:
             bot.send_message(user_id, message[3])
-        sleep(i * .05)
+        sleep(i * 1)
 
 
 def daily_diksha_message():
