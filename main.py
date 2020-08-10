@@ -1,6 +1,6 @@
 import logging
 from functools import partial
-from datetime import datetime, date
+from datetime import datetime, date, time
 from time import sleep
 from typing import Dict, List, Tuple
 
@@ -28,6 +28,7 @@ from telegram_class import Telegram
 @run_async
 def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[str, str, str, str]]):
     for i, message in enumerate(messages):
+        logging.info(f'Sending a Message: {user_id}')
         if message[0]:
             context.bot.send_document(user_id, message[0], caption=f'{date.today()}')
         if message[1]:
@@ -36,18 +37,23 @@ def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[s
             context.bot.send_document(user_id, message[2])
         if message[3]:
             context.bot.send_message(user_id, message[3])
-        sleep(i * 1)
+        sleep(i * 60)
 
 
 def daily_message(context: CallbackContext):
+    logging.info('Entering Daily Message Function')
     tier_logic = TierLogic()
     hour_delta = 0
     data: Dict[str, List[Tuple[str, str, str, str]]] = tier_logic.get_today_data(hour_delta=hour_delta)
 
     cron_logic = CronLogic()
     users = cron_logic.users()
+    logging.info(f'{users}\n {data}')
     for challenge, messages in data.items():
-        for user_id in users[challenge]:
+        for i, user_id in enumerate(users[challenge]):
+            if i != 0 and i % 20 == 0:
+                logging.info('Sleeping Peacefully')
+                sleep(180)
             parse_message(context, user_id, messages)
 
 
@@ -58,7 +64,8 @@ def main():
     telegram.initialize()
 
     job_queue: JobQueue = telegram.job_queue
-    job_queue.run_once(daily_message, datetime(2020, month=8, day=10, hour=9, minute=45, tzinfo=timezone('US/Eastern')))
+    logging.info(f'{datetime.now()}')
+    job_queue.run_daily(daily_message, time=time(hour=1, minute=25, tzinfo=timezone('US/Eastern')))
 
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', share_number)],
