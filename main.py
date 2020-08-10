@@ -31,13 +31,13 @@ def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[s
         for i, message in enumerate(messages):
             logging.info(f'Sending a Message: {user_id}')
             if message[0]:
-                context.bot.send_document(user_id, message[0], caption=f'{date.today()}')
+                context.bot.send_document(user_id, message[0], caption=f'{date.today()}', timeout=60)
             if message[1]:
-                context.bot.send_document(user_id, message[1])
+                context.bot.send_document(user_id, message[1], timeout=60)
             if message[2]:
-                context.bot.send_document(user_id, message[2])
+                context.bot.send_document(user_id, message[2], timeout=60)
             if message[3]:
-                context.bot.send_message(user_id, message[3])
+                context.bot.send_message(user_id, message[3], timeout=60)
             sleep(60)
     except Unauthorized:
         logging.error(f'USER ID has Blocked the Bot. Delete them: {user_id}')
