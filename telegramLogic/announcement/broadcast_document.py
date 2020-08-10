@@ -23,7 +23,7 @@ def broadcast_document(update: Update, context: CallbackContext):
 
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
         if i != 0 and i % 25 == 0:
-            sleep(30)
+            sleep(240)
         if document := message.document:
             single_broadcast(context, uid, document, message)
 

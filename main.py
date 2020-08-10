@@ -53,7 +53,7 @@ def daily_message(context: CallbackContext):
             logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
             if i != 0 and i % 20 == 0:
                 logging.info('Sleeping Peacefully')
-                sleep(120)
+                sleep(240)
                 logging.info('Slept Peacefully')
             parse_message(context, user_id, messages)
     logging.info('Daily Message Done Sending')
