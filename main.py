@@ -56,6 +56,9 @@ def daily_message(context: CallbackContext):
                 sleep(240)
                 logging.info('Slept Peacefully')
             parse_message(context, user_id, messages)
+        logging.info('New Message, Now Sleeping')
+        sleep(60)
+        logging.info('New Message, Done Sleeping')
     logging.info('Daily Message Done Sending')
 
 
