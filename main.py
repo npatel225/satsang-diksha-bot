@@ -97,11 +97,11 @@ def main():
     telegram.add_handler(announcement_handler)
 
     edit_handler = ConversationHandler(
-        entry_points=[CommandHandler(['change', 'edit'], choose_challenge)],
+        entry_points=[CommandHandler('change', choose_challenge)],
         states={
             '/tier': [CallbackQueryHandler(partial(submit_tier, edit=True))],
         },
-        fallbacks=[CommandHandler(['change', 'edit'], choose_challenge)],
+        fallbacks=[CommandHandler('change', choose_challenge)],
     )
 
     telegram.add_handler(edit_handler)
