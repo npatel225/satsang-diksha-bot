@@ -71,7 +71,7 @@ def main():
 
     job_queue: JobQueue = telegram.job_queue
     logging.info(f'Time Right now: {datetime.now()}')
-    job_queue.run_daily(daily_message, time=time(hour=int(getenv('HOUR')), minute=int(getenv('MINUTE'))))
+    job_queue.run_daily(daily_message, time=time(hour=int(getenv('HOUR', '5')), minute=int(getenv('MINUTE', '30'))))
 
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', choose_challenge)],
@@ -97,11 +97,11 @@ def main():
     telegram.add_handler(announcement_handler)
 
     edit_handler = ConversationHandler(
-        entry_points=[CommandHandler('edit', choose_challenge)],
+        entry_points=[CommandHandler(['change', 'edit'], choose_challenge)],
         states={
             '/tier': [CallbackQueryHandler(partial(submit_tier, edit=True))],
         },
-        fallbacks=[CommandHandler('edit', choose_challenge)],
+        fallbacks=[CommandHandler(['change', 'edit'], choose_challenge)],
     )
 
     telegram.add_handler(edit_handler)

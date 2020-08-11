@@ -30,7 +30,8 @@ def submit_tier(update: Update, context: CallbackContext, edit=False):
         logging.info(f'Switching tier to: {tier}')
         row, col = user_sheet.get_tier_from_uid(person_id)
         if user_sheet.update_cell(row, col, tier) != -1:
-            text = f'{message_dict.get(tier, "Error in getting challenge")}'
+            text = f'{message_dict.get(tier, "Error in getting challenge")}' \
+                   f'\n\nNote: You will have to catch up if you have switched to a challenge with more shlokas.'
             logging.info(f'User: {person_id}, successfully changed tiers')
         else:
             text = f'We could not locate you. Please run `/start` to register'
