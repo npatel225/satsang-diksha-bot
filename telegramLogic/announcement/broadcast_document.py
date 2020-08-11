@@ -27,7 +27,7 @@ def broadcast_document(update: Update, context: CallbackContext):
         challenge = None
 
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        sleep(i % 10)
+        sleep(i % 9)
         if document := message.document:
             single_broadcast(context, uid, document, message)
         logging.info(f'Iteration Completed {i}')

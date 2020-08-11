@@ -27,7 +27,7 @@ def broadcast_video(update: Update, context: CallbackContext):
         challenge = None
 
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        sleep(i % 10)
+        sleep(i % 9)
         if video := message.video:
             single_broadcast(context, uid, video, message)
         logging.info(f'Iteration Completed {i}')

@@ -27,7 +27,7 @@ def broadcast_image(update: Update, context: CallbackContext):
         challenge = None
 
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        sleep(i % 10)
+        sleep(i % 9)
         if photos := message.photo:
             for photo in photos:
                 single_broadcast(context, uid, photo, message)
