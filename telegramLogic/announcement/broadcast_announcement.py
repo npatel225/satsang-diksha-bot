@@ -26,8 +26,8 @@ def broadcast_announcement(update: Update, context: CallbackContext):
     if challenge == 'All':
         challenge = None
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        sleep(i % 20)
-        logging.info(f'Iteration Completed {i}')
+        sleep(i % 5)
         single_message_broadcast(context, uid, message.text)
+        logging.info(f'Iteration Completed {i}')
 
     return ConversationHandler.END
