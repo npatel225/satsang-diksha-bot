@@ -57,8 +57,8 @@ def daily_message(context: CallbackContext):
             logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
             sleep(i % 15)
             parse_message(context, user_id, messages)
-        logging.info(f'Finished Challenge: {challenge}')
-        sleep(len(users[challenge] * 1.5))
+        logging.info(f'Finished Challenge: {challenge}. Sleeping for {len(users[challenge]) * 1.5}')
+        sleep(len(users[challenge]) * 1.5)
         logging.info('Done Sleeping. New Challenge Starting')
     logging.info(f'Daily Message Done Sending {datetime.now()}')
 
