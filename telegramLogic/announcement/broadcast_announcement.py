@@ -22,15 +22,15 @@ def single_message_broadcast(context, uid, text):
 def broadcast_announcement(update: Update, context: CallbackContext):
     job_queue: JobQueue = context.job_queue
 
-    def cb():
+    def cb(c: CallbackContext):
         message: Message = update.message
         user_sheet = UserSheet()
-        challenge = context.user_data.get('broadcast_challenge', 'All')
+        challenge = c.user_data.get('broadcast_challenge', 'All')
         if challenge == 'All':
             challenge = None
         for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
             sleep(i % 5)
-            single_message_broadcast(context, uid, message.text)
+            single_message_broadcast(c, uid, message.text)
             logging.info(f'Iteration Completed {i}')
 
     job_queue.run_once(cb, 10)

@@ -22,17 +22,17 @@ def single_broadcast(context, uid, document, message):
 def broadcast_document(update: Update, context: CallbackContext):
     job_queue: JobQueue = context.job_queue
 
-    def cb():
+    def cb(c: CallbackContext):
         message: Message = update.message
         user_sheet = UserSheet()
-        challenge = context.user_data.get('broadcast_challenge', 'All')
+        challenge = c.user_data.get('broadcast_challenge', 'All')
         if challenge == 'All':
             challenge = None
 
         for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
             sleep(i % 9)
             if document := message.document:
-                single_broadcast(context, uid, document, message)
+                single_broadcast(c, uid, document, message)
             logging.info(f'Iteration Completed {i}')
 
     job_queue.run_once(cb, 10)
