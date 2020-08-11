@@ -12,6 +12,7 @@ from sheetLogic.user_sheet import UserSheet
 @run_async
 def single_broadcast(context, uid, document, message):
     try:
+        logging.info(f'Sending Announcement to {uid}')
         context.bot.send_document(uid, document.file_id, caption=message.caption)
     except Unauthorized:
         logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
@@ -27,6 +28,7 @@ def broadcast_document(update: Update, context: CallbackContext):
 
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
         sleep(i % 30)
+        logging.info(f'Iteration Completed {i}')
         if document := message.document:
             single_broadcast(context, uid, document, message)
 
