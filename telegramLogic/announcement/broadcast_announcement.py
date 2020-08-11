@@ -3,7 +3,7 @@ from time import sleep
 
 from telegram import Update, Message
 from telegram.error import Unauthorized
-from telegram.ext import CallbackContext, ConversationHandler, run_async
+from telegram.ext import CallbackContext, ConversationHandler, run_async, JobQueue
 
 from restricted_command import restricted_command
 from sheetLogic.user_sheet import UserSheet
@@ -20,14 +20,19 @@ def single_message_broadcast(context, uid, text):
 
 @restricted_command
 def broadcast_announcement(update: Update, context: CallbackContext):
-    message: Message = update.message
-    user_sheet = UserSheet()
-    challenge = context.user_data.get('broadcast_challenge', 'All')
-    if challenge == 'All':
-        challenge = None
-    for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        sleep(i % 5)
-        single_message_broadcast(context, uid, message.text)
-        logging.info(f'Iteration Completed {i}')
+    job_queue: JobQueue = context.job_queue
+
+    def cb():
+        message: Message = update.message
+        user_sheet = UserSheet()
+        challenge = context.user_data.get('broadcast_challenge', 'All')
+        if challenge == 'All':
+            challenge = None
+        for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
+            sleep(i % 5)
+            single_message_broadcast(context, uid, message.text)
+            logging.info(f'Iteration Completed {i}')
+
+    job_queue.run_once(cb, 10)
 
     return ConversationHandler.END
