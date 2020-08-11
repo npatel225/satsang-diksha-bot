@@ -1,15 +1,17 @@
 import logging
-import os
-import sys
 from functools import partial
-from threading import Thread
+from datetime import datetime, date, time
+from os import getenv
+from time import sleep
+from typing import Dict, List, Tuple
 
-from telegram import Update
-from telegram.error import Unauthorized, BadRequest, TimedOut, NetworkError, ChatMigrated, TelegramError
-from telegram.ext import Dispatcher, Updater, Handler, CallbackContext, ConversationHandler, CommandHandler, \
-    MessageHandler, Filters, CallbackQueryHandler
+from telegram.error import Unauthorized
+from telegram.ext import CallbackContext, ConversationHandler, CommandHandler, \
+    MessageHandler, Filters, CallbackQueryHandler, JobQueue, run_async
 
 from SC import SERVICE_ACCOUNT
+from sheetLogic.cron_logic import CronLogic
+from sheetLogic.tier_logic import TierLogic
 from telegramLogic.announcement.announcement import announcement
 from telegramLogic.announcement.broadcast_announcement import broadcast_announcement
 from telegramLogic.announcement.broadcast_choose_challenge import broadcast_choose_challenge
@@ -18,68 +20,50 @@ from telegramLogic.announcement.broadcast_image import broadcast_image
 from telegramLogic.announcement.broadcast_video import broadcast_video
 from telegramLogic.choose_tier import choose_challenge
 from telegramLogic.main_message_handler import main_message_handler
-from telegramLogic.share_number import share_number
 from telegramLogic.submit_tier import submit_tier
+from telegram_class import Telegram
 
 
-class Telegram:
-    token: str = None
-    updater: Updater = None
-    dispatcher: Dispatcher = None
+@run_async
+def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[str, str, str, str]]):
+    try:
+        for i, message in enumerate(messages):
+            logging.info(f'Sending a Message: {user_id}')
+            if message[0]:
+                context.bot.send_document(user_id, message[0], caption=f'{date.today()} - {message[3]}', timeout=60)
+            elif message[3]:
+                context.bot.send_message(user_id, message[3], timeout=60)
+            if message[1]:
+                context.bot.send_document(user_id, message[1], timeout=60)
+            if message[2]:
+                context.bot.send_document(user_id, message[2], timeout=60)
+            sleep(15)
+    except Unauthorized:
+        logging.error(f'USER ID has Blocked the Bot. Delete them: {user_id}')
 
-    def set_token(self, token: str):
-        self.token = token
 
-    def initialize(self):
-        if not self.token:
-            self.token = os.environ.get('TELEGRAM_TOKEN')
+def daily_message(context: CallbackContext):
+    logging.info(f'Entering Daily Message Function: {datetime.now()}')
+    tier_logic = TierLogic()
+    hour_delta = 0 if getenv('ENV') != 'DEV' else 24
+    data: Dict[str, List[Tuple[str, str, str, str]]] = tier_logic.get_today_data(hour_delta=hour_delta)
 
-        self.updater = Updater(self.token, workers=10, use_context=True)
-        self.dispatcher = self.updater.dispatcher
-
-    def add_handler(self, handler: Handler):
-        self.dispatcher.add_handler(handler)
-
-    def stop_and_restart(self):
-        """Gracefully stop the Updater and replace the current process with a new one"""
-        self.updater.stop()
-        os.execl(sys.executable, sys.executable, *sys.argv)
-
-    def restart(self):
-        # update.message.reply_text('Bot is restarting...')
-        Thread(target=self.stop_and_restart).start()
-
-    def error_callback(self, update: Update, context: CallbackContext):
-        try:
-            raise context.error
-        except Unauthorized:
-            # remove update.message.chat_id from conversation list
-            return ConversationHandler.END
-        except BadRequest:
-            # handle malformed requests - read more below!
-            return ConversationHandler.END
-        except TimedOut:
-            # handle slow connection problems
-            return ConversationHandler.END
-        except NetworkError:
-            # handle other connection problems
-            return ConversationHandler.END
-        except ChatMigrated:
-            # the chat_id of a group has changed, use e.new_chat_id instead
-            return ConversationHandler.END
-        except TelegramError as err:
-            # handle all other telegram related errors
-            logging.error(err)
-            self.restart()
-            context.bot.send_message(263366770, f'Error reached, restarting bot. {err}')
-            return ConversationHandler.END
-
-    def execute(self):
-        PORT = int(os.environ.get("PORT", "8443"))
-        APP_NAME = os.environ.get("APP_NAME")
-        self.updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=self.token)
-        self.updater.bot.set_webhook(f"{APP_NAME}{self.token}")
-        self.updater.idle()
+    cron_logic = CronLogic()
+    users = cron_logic.users()
+    logging.info(f'{users}\n {data}')
+    for challenge, messages in data.items():
+        for i, user_id in enumerate(users[challenge]):
+            logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
+            if i != 0 and i % 20 == 0:
+                logging.info('Sleeping Peacefully')
+                sleep(50)
+                logging.info('Slept Peacefully')
+            parse_message(context, user_id, messages)
+        logging.info(f'Finished Category: {challenge}')
+        logging.info(f'New Message:, Now Sleeping')
+        sleep(300)
+        logging.info('New Message, Done Sleeping')
+    logging.info(f'Daily Message Done Sending {datetime.now()}')
 
 
 def main():
@@ -87,13 +71,17 @@ def main():
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     telegram = Telegram()
     telegram.initialize()
+
+    job_queue: JobQueue = telegram.job_queue
+    logging.info(f'Time Right now: {datetime.now()}')
+    job_queue.run_daily(daily_message, time=time(hour=int(getenv('HOUR')), minute=int(getenv('MINUTE'))))
+
     start_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', share_number)],
+        entry_points=[CommandHandler('start', choose_challenge)],
         states={
-            '/choose_tier': [MessageHandler(Filters.contact, choose_challenge)],
             '/tier': [CallbackQueryHandler(submit_tier)]
         },
-        fallbacks=[CommandHandler('start', share_number)]
+        fallbacks=[CommandHandler('start', choose_challenge)]
     )
     telegram.add_handler(start_handler)
     announcement_handler = ConversationHandler(
@@ -112,12 +100,11 @@ def main():
     telegram.add_handler(announcement_handler)
 
     edit_handler = ConversationHandler(
-        entry_points=[CommandHandler('edit', share_number)],
+        entry_points=[CommandHandler('edit', choose_challenge)],
         states={
-            '/choose_tier': [MessageHandler(Filters.contact, choose_challenge)],
             '/tier': [CallbackQueryHandler(partial(submit_tier, edit=True))],
         },
-        fallbacks=[CommandHandler('edit', share_number)],
+        fallbacks=[CommandHandler('edit', choose_challenge)],
     )
 
     telegram.add_handler(edit_handler)

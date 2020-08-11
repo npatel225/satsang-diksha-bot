@@ -20,7 +20,9 @@ class TierLogic(SheetCore):
         for challenge, tier_sheet in self.challenge_sheets.items():
             for data in tier_sheet.get_all_values()[1:]:
                 try:
-                    if datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y').date() == date.today() - timedelta(hours=hour_delta):
+                    given_datetime = datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y') - timedelta(
+                        hours=hour_delta)
+                    if given_datetime.date() == date.today():
                         today_data[challenge].append(
                             (data[MessageEnum.VIDEO_LINK.value],
                              data[MessageEnum.GRAPHIC_LINK.value],

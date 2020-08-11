@@ -1,27 +1,35 @@
-from threading import Thread
+import logging
+from time import sleep
 
 from telegram import Update, Message
-from telegram.ext import CallbackContext, ConversationHandler
+from telegram.error import Unauthorized
+from telegram.ext import CallbackContext, ConversationHandler, run_async
 
 from restricted_command import restricted_command
 from sheetLogic.user_sheet import UserSheet
+
+
+@run_async
+def single_broadcast(context, uid, photo, message):
+    try:
+        context.bot.send_photo(uid, photo.file_id, caption=message.caption)
+    except Unauthorized:
+        logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
 
 
 @restricted_command
 def broadcast_image(update: Update, context: CallbackContext):
     message: Message = update.message
     user_sheet = UserSheet()
-    threads = []
     challenge = context.user_data.get('broadcast_challenge', 'All')
     if challenge == 'All':
         challenge = None
 
-    for uid in user_sheet.get_challenge_uids(challenge=challenge):
+    for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
+        if i != 0 and i % 25 == 0:
+            sleep(100)
         if photos := message.photo:
             for photo in photos:
-                thread = Thread(target=lambda: context.bot.send_photo(uid, photo.file_id, caption=message.caption))
-                thread.start()
-                threads.append(thread)
+                single_broadcast(context, uid, photo, message)
 
-    list(map(lambda t: t.join(), threads))
     return ConversationHandler.END
