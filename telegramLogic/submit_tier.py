@@ -39,35 +39,35 @@ def submit_tier(update: Update, context: CallbackContext, edit=False):
         if tier == 'Mahant':
             Thread(target=lambda: context.bot.send_photo(
                 chat_id=person_id,
-                photo='https://baps.box.com/shared/static/y72d037zjyfy9tk1awagtjmd6atr8i35.jpg?v=2'
+                photo='https://baps.box.com/shared/static/y72d037zjyfy9tk1awagtjmd6atr8i35.jpg?v=3'
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
-                document='https://baps.box.com/shared/static/7drpp40u7wnu8fvmhuy0o8etw4dpvlbb.pdf?v=2')).start()
+                document='https://baps.box.com/shared/static/7drpp40u7wnu8fvmhuy0o8etw4dpvlbb.pdf?v=3')).start()
         elif tier == 'Pramukh':
             Thread(target=lambda: context.bot.send_photo(
                 chat_id=person_id,
-                photo='https://baps.box.com/shared/static/zqt5mckhhwbkml7gzqnrd4a52ovojaux.jpg?v=2'
+                photo='https://baps.box.com/shared/static/zqt5mckhhwbkml7gzqnrd4a52ovojaux.jpg?v=3'
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
-                document='https://baps.box.com/shared/static/4lip8e1511riapolm61g76gvof5jw601.pdf?v=2')).start()
+                document='https://baps.box.com/shared/static/4lip8e1511riapolm61g76gvof5jw601.pdf?v=3')).start()
         elif tier == 'Yogi':
             Thread(target=lambda: context.bot.send_photo(
                 chat_id=person_id,
-                photo='https://baps.box.com/shared/static/n6nkf7tqj1z3587o5x4tmsh7awgp0hyi.jpg?v=2'
+                photo='https://baps.box.com/shared/static/n6nkf7tqj1z3587o5x4tmsh7awgp0hyi.jpg?v=3'
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
-                document='https://baps.box.com/shared/static/y05xpgl4xstubzvzhal111i95wwr6by6.pdf?v=2')).start()
+                document='https://baps.box.com/shared/static/y05xpgl4xstubzvzhal111i95wwr6by6.pdf?v=3')).start()
         elif tier == 'Shastriji':
             Thread(target=lambda: context.bot.send_photo(
                 chat_id=person_id,
-                photo='https://baps.box.com/shared/static/fdqym3f6centtgeqai0km6cwlu4rovbt.jpg?v=2'
+                photo='https://baps.box.com/shared/static/fdqym3f6centtgeqai0km6cwlu4rovbt.jpg?v=3'
             )).start()
             Thread(target=lambda: context.bot.send_document(
                 chat_id=person_id,
-                document='https://baps.box.com/shared/static/auvtp12v83dc91qun2blgtz0nfcusdxh.pdf?v=2')).start()
+                document='https://baps.box.com/shared/static/auvtp12v83dc91qun2blgtz0nfcusdxh.pdf?v=3')).start()
     else:
         tier = user_sheet.get_tier(person_id)
         text = f'Your User ID, {person_id}, already exists'

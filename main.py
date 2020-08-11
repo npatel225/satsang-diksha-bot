@@ -37,7 +37,7 @@ def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[s
                 context.bot.send_document(user_id, message[1], timeout=60)
             if message[2]:
                 context.bot.send_document(user_id, message[2], timeout=60)
-            sleep(10)
+            sleep(15)
     except Unauthorized:
         logging.error(f'USER ID has Blocked the Bot. Delete them: {user_id}')
 
@@ -56,13 +56,13 @@ def daily_message(context: CallbackContext):
             logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
             if i != 0 and i % 20 == 0:
                 logging.info('Sleeping Peacefully')
-                sleep(40)
+                sleep(50)
                 logging.info('Slept Peacefully')
             parse_message(context, user_id, messages)
         logging.info('New Message, Now Sleeping')
         sleep(300)
         logging.info('New Message, Done Sleeping')
-    logging.info('Daily Message Done Sending')
+    logging.info(f'Daily Message Done Sending {datetime.now()}')
 
 
 def main():
