@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime
+from pytz import timezone
 from threading import Thread
 from typing import List
 
@@ -28,13 +30,14 @@ def submit_tier(update: Update, context: CallbackContext, edit=False):
         logging.info(f'Switching tier to: {tier}')
         row, col = user_sheet.get_tier_from_uid(person_id)
         if user_sheet.update_cell(row, col, tier) != -1:
-            text = f'{message_dict.get(tier, "Error in getting challenge")}'
+            text = f'{message_dict.get(tier, "Error in getting challenge")}' \
+                   f'\n\nNote: You will have to catch up if you have switched to a challenge with more shlokas.'
             logging.info(f'User: {person_id}, successfully changed tiers')
         else:
             text = f'We could not locate you. Please run `/start` to register'
-            logging.info(f'User does not exist: {person_id}')
+            logging.error(f'User does not exist: {person_id}')
     elif not user_sheet.uid_check(person_id):
-        user_sheet.append_sheet([f'{person_id}', tier])
+        user_sheet.append_sheet([f'{person_id}', tier, datetime.now(tz=timezone('US/Eastern'))])
         text = f'{message_dict.get(tier, "Error in getting challenge")}'
         if tier == 'Mahant':
             Thread(target=lambda: context.bot.send_photo(
