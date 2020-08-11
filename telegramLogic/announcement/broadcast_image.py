@@ -32,8 +32,7 @@ def broadcast_image(update: Update, context: CallbackContext):
         for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
             sleep(i % 9)
             if photos := message.photo:
-                for photo in photos:
-                    single_broadcast(c, uid, photo, message)
+                single_broadcast(c, uid, photos[-1], message)
             logging.info(f'Iteration Completed {i}')
 
     job_queue.run_once(cb, 10, context=context.user_data)
