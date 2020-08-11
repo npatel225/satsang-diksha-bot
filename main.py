@@ -37,7 +37,10 @@ def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[s
                 context.bot.send_document(user_id, message[1], timeout=60)
             if message[2]:
                 context.bot.send_document(user_id, message[2], timeout=60)
-            sleep(15)
+            if i != 0 and i % 5 == 0:
+                sleep(60)
+            else:
+                sleep(3)
     except Unauthorized:
         logging.warning(f'USER ID has Blocked the Bot. Delete them: {user_id}')
 
@@ -55,7 +58,7 @@ def daily_message(context: CallbackContext):
         logging.info(f'Starting Challenge: {challenge}')
         for i, user_id in enumerate(users[challenge]):
             logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
-            sleep(i % 15)
+            sleep(i % 8)
             parse_message(context, user_id, messages)
         logging.info(f'Finished Challenge: {challenge}. Sleeping for {len(users[challenge]) * 1.5}')
         sleep(len(users[challenge]) * 1.5)
@@ -97,11 +100,11 @@ def main():
     telegram.add_handler(announcement_handler)
 
     edit_handler = ConversationHandler(
-        entry_points=[CommandHandler(['change', 'edit'], choose_challenge)],
+        entry_points=[CommandHandler('change', choose_challenge)],
         states={
             '/tier': [CallbackQueryHandler(partial(submit_tier, edit=True))],
         },
-        fallbacks=[CommandHandler(['change', 'edit'], choose_challenge)],
+        fallbacks=[CommandHandler('change', choose_challenge)],
     )
 
     telegram.add_handler(edit_handler)

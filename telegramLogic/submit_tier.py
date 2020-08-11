@@ -37,7 +37,8 @@ def submit_tier(update: Update, context: CallbackContext, edit=False):
             text = f'We could not locate you. Please run `/start` to register'
             logging.error(f'User does not exist: {person_id}')
     elif not user_sheet.uid_check(person_id):
-        user_sheet.append_sheet([f'{person_id}', tier, datetime.now(tz=timezone('US/Eastern'))])
+        user_sheet.append_sheet(
+            [f'{person_id}', tier, datetime.now(tz=timezone('US/Eastern')).strftime('%m/%d/%Y, %H:%M:%S')])
         text = f'{message_dict.get(tier, "Error in getting challenge")}'
         if tier == 'Mahant':
             Thread(target=lambda: context.bot.send_photo(
