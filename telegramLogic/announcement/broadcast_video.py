@@ -12,6 +12,7 @@ from sheetLogic.user_sheet import UserSheet
 @run_async
 def single_broadcast(context, uid, video, message):
     try:
+        logging.info(f'Sending Announcement to {uid}')
         context.bot.send_video(uid, video.file_id, caption=message.caption)
     except Unauthorized:
         logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
@@ -26,8 +27,8 @@ def broadcast_video(update: Update, context: CallbackContext):
         challenge = None
 
     for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-        if i != 0 and i % 25 == 0:
-            sleep(100)
+        sleep(i % 30)
+        logging.info(f'Iteration Completed {i}')
         if video := message.video:
             single_broadcast(context, uid, video, message)
 
