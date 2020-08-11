@@ -39,7 +39,7 @@ def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[s
                 context.bot.send_document(user_id, message[2], timeout=60)
             sleep(15)
     except Unauthorized:
-        logging.error(f'USER ID has Blocked the Bot. Delete them: {user_id}')
+        logging.warning(f'USER ID has Blocked the Bot. Delete them: {user_id}')
 
 
 def daily_message(context: CallbackContext):
@@ -52,17 +52,14 @@ def daily_message(context: CallbackContext):
     users = cron_logic.users()
     logging.info(f'{users}\n {data}')
     for challenge, messages in data.items():
+        logging.info(f'Starting Challenge: {challenge}')
         for i, user_id in enumerate(users[challenge]):
             logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
-            if i != 0 and i % 20 == 0:
-                logging.info('Sleeping Peacefully')
-                sleep(50)
-                logging.info('Slept Peacefully')
+            sleep(i % 15)
             parse_message(context, user_id, messages)
-        logging.info(f'Finished Category: {challenge}')
-        logging.info(f'New Message:, Now Sleeping')
-        sleep(300)
-        logging.info('New Message, Done Sleeping')
+        logging.info(f'Finished Challenge: {challenge}')
+        sleep(len(users[challenge] * 1.5))
+        logging.info('Done Sleeping. New Challenge Starting')
     logging.info(f'Daily Message Done Sending {datetime.now()}')
 
 
