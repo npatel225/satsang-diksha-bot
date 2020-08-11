@@ -11,6 +11,8 @@ def main_message_handler(update: Update, context: CallbackContext):
     message.delete()
     message_dict = SheetMessages().message_dict()
 
-    # m = message_dict.get(message.text, "Please run `/start` again")
-    # if
-    message.reply_text(text=message_dict.get(message.text, "Please run `/start` again"))
+    message.reply_text(text=message_dict
+                       .get(message.text, "You have entered an incorrect command. "
+                                          "Please enter a valid command. "
+                                          "If your buttons are not working, please run `/start` again")
+                       )

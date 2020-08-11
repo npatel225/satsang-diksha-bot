@@ -16,6 +16,7 @@ def single_message_broadcast(context, uid, text):
     except Unauthorized:
         logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
 
+
 @restricted_command
 def broadcast_announcement(update: Update, context: CallbackContext):
     message: Message = update.message
