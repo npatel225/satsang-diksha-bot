@@ -1,6 +1,5 @@
 import logging
 from time import sleep
-from typing import Dict
 
 from telegram import Update, Message
 from telegram.error import Unauthorized
