@@ -10,15 +10,6 @@ from run_async_func import run_async_func
 from sheetLogic.user_sheet import UserSheet
 
 
-@run_async
-def single_broadcast(context: CallbackContext, uid, photo, message):
-    try:
-        logging.info(f'Sending Announcement to {uid}')
-        context.bot.send_photo(uid, photo.file_id, caption=message.caption)
-    except Unauthorized:
-        logging.error(f'USER ID has Blocked the Bot. Delete them: {uid}')
-
-
 @restricted_command
 def broadcast_entity(update: Update, context: CallbackContext):
     job_queue: JobQueue = context.job_queue
