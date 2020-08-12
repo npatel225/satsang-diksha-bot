@@ -2,6 +2,7 @@ from collections import defaultdict
 from typing import Dict, List
 from sheetLogic.user_sheet import UserSheet
 
+
 class CronLogic(UserSheet):
     def __init__(self):
         super().__init__()
