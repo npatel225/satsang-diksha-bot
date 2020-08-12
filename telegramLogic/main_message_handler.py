@@ -1,9 +1,7 @@
 import logging
 
-import telegram
 from telegram import Update, Message
 from telegram.ext import CallbackContext
-import re
 
 from sheetLogic.sheet_messages import SheetMessages
 
