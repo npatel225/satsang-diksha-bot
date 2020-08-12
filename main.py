@@ -13,11 +13,8 @@ from SC import SERVICE_ACCOUNT
 from sheetLogic.cron_logic import CronLogic
 from sheetLogic.tier_logic import TierLogic
 from telegramLogic.announcement.announcement import announcement
-from telegramLogic.announcement.broadcast_announcement import broadcast_announcement
 from telegramLogic.announcement.broadcast_choose_challenge import broadcast_choose_challenge
-from telegramLogic.announcement.broadcast_document import broadcast_document
-from telegramLogic.announcement.broadcast_image import broadcast_image
-from telegramLogic.announcement.broadcast_video import broadcast_video
+from telegramLogic.announcement.broadcast_entity import broadcast_entity
 from telegramLogic.choose_tier import choose_challenge
 from telegramLogic.main_message_handler import main_message_handler
 from telegramLogic.submit_challenge import submit_challenge
@@ -89,10 +86,7 @@ def main():
         states={
             '/challenge': [CallbackQueryHandler(broadcast_choose_challenge)],
             '/announcement': [
-                MessageHandler(Filters.text, broadcast_announcement),
-                MessageHandler(Filters.document, broadcast_document),
-                MessageHandler(Filters.photo, broadcast_image),
-                MessageHandler(Filters.video, broadcast_video),
+                MessageHandler(Filters.text | Filters.photo | Filters.document | Filters.video, broadcast_entity),
             ]
         },
         fallbacks=[CommandHandler('announcement', announcement)],

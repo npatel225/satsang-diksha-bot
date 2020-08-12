@@ -6,11 +6,12 @@ from telegram.error import Unauthorized
 from telegram.ext import CallbackContext, ConversationHandler, run_async, JobQueue
 
 from restricted_command import restricted_command
+from run_async_func import run_async_func
 from sheetLogic.user_sheet import UserSheet
 
 
 @run_async
-def single_broadcast(context, uid, photo, message):
+def single_broadcast(context: CallbackContext, uid, photo, message):
     try:
         logging.info(f'Sending Announcement to {uid}')
         context.bot.send_photo(uid, photo.file_id, caption=message.caption)
@@ -19,7 +20,7 @@ def single_broadcast(context, uid, photo, message):
 
 
 @restricted_command
-def broadcast_image(update: Update, context: CallbackContext):
+def broadcast_entity(update: Update, context: CallbackContext):
     job_queue: JobQueue = context.job_queue
 
     def cb(c: CallbackContext):
@@ -31,8 +32,15 @@ def broadcast_image(update: Update, context: CallbackContext):
 
         for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
             sleep(i % 9)
+            logging.info(f'Sending Announcement to {uid}')
             if photos := message.photo:
-                single_broadcast(c, uid, photos[-1], message)
+                run_async_func(c.bot.send_photo, chat_id=uid, photo=photos[-1], caption=message.caption)
+            elif video := message.video:
+                run_async_func(c.bot.send_video, chat_id=uid, video=video, caption=message.caption)
+            elif document := message.document:
+                run_async_func(c.bot.send_document, chat_id=uid, document=document.file_id, caption=message.caption)
+            else:
+                run_async_func(c.bot.send_message, chat_id=uid, text=message.text)
             logging.info(f'Iteration Completed {i}')
 
     job_queue.run_once(cb, 10, context=context.user_data)
