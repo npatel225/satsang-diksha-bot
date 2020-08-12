@@ -20,7 +20,7 @@ from telegramLogic.announcement.broadcast_image import broadcast_image
 from telegramLogic.announcement.broadcast_video import broadcast_video
 from telegramLogic.choose_tier import choose_challenge
 from telegramLogic.main_message_handler import main_message_handler
-from telegramLogic.submit_tier import submit_tier
+from telegramLogic.submit_challenge import submit_challenge
 from telegram_class import Telegram
 
 
@@ -79,7 +79,7 @@ def main():
     start_handler = ConversationHandler(
         entry_points=[CommandHandler('start', choose_challenge)],
         states={
-            '/tier': [CallbackQueryHandler(submit_tier)]
+            '/tier': [CallbackQueryHandler(submit_challenge)]
         },
         fallbacks=[CommandHandler('start', choose_challenge)]
     )
@@ -102,7 +102,7 @@ def main():
     edit_handler = ConversationHandler(
         entry_points=[CommandHandler(['change', 'edit'], choose_challenge)],
         states={
-            '/tier': [CallbackQueryHandler(partial(submit_tier, edit=True))],
+            '/tier': [CallbackQueryHandler(partial(submit_challenge, edit=True))],
         },
         fallbacks=[CommandHandler(['change', 'edit'], choose_challenge)],
     )
