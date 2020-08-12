@@ -74,7 +74,7 @@ def submit_tier(update: Update, context: CallbackContext, edit=False):
                 document='https://baps.box.com/shared/static/auvtp12v83dc91qun2blgtz0nfcusdxh.pdf?v=3')).start()
     else:
         tier = user_sheet.get_tier(person_id)
-        text = f'Your User ID, {person_id}, already exists. Please run `/edit` to change your challenge'
+        text = f'Your User ID, {person_id}, already exists. Please run `/change` to change your challenge'
 
     custom_keyboard: List[List[KeyboardButton]] = list(
         map(lambda m: [KeyboardButton(text=f'{m} - {tier}')], message_dict.get('info')))
