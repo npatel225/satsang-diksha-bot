@@ -26,7 +26,7 @@ def submit_challenge(update: Update, context: CallbackContext, edit=False):
 
     user_sheet = UserSheet()
 
-    run_async_func(context.bot.delete_message, person_id, query.message.message_id)
+    run_async_func(context.bot.delete_message, chat_id=person_id, message_id=query.message.message_id)
     if edit:
         logging.info(f'Switching challenge to: {challenge}')
         row, col = user_sheet.get_tier_from_uid(person_id)
@@ -44,8 +44,8 @@ def submit_challenge(update: Update, context: CallbackContext, edit=False):
 
         booket_link = f'📚 PDF Booklet - {challenge}'
         milestone_link = f'📅 Milestones - {challenge}'
-        run_async_func(context.bot.send_photo, person_id, message_dict.get(milestone_link))
-        run_async_func(context.bot.send_document, person_id, message_dict.get(booket_link))
+        run_async_func(context.bot.send_photo, chat_id=person_id, message_id=message_dict.get(milestone_link))
+        run_async_func(context.bot.send_document, chat_id=person_id, message_id=message_dict.get(booket_link))
     else:
         challenge = user_sheet.get_tier(person_id)
         text = f'Your User ID, {person_id}, already exists. Please run `/change` to change your challenge'

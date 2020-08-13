@@ -22,24 +22,24 @@ from telegram_class import Telegram
 
 
 @run_async
-def parse_message(context: CallbackContext, user_id: str, messages: List[Tuple[str, str, str, str]]):
+def parse_message(context: CallbackContext, chat_id: str, messages: List[Tuple[str, str, str, str]]):
     try:
         for i, message in enumerate(messages):
-            logging.info(f'Sending a Message: {user_id}\n{message}')
+            logging.info(f'Sending a Message: {chat_id}\n{message}')
             if message[0]:
-                context.bot.send_document(user_id, message[0], caption=f'{date.today()} - {message[3]}', timeout=60)
+                context.bot.send_document(chat_id, message[0], caption=f'{date.today()} - {message[3]}', timeout=60)
             elif message[3]:
-                context.bot.send_message(user_id, message[3], timeout=60)
+                context.bot.send_message(chat_id, message[3], timeout=60)
             if message[1]:
-                context.bot.send_document(user_id, message[1], timeout=60)
+                context.bot.send_document(chat_id, message[1], timeout=60)
             if message[2]:
-                context.bot.send_document(user_id, message[2], timeout=60)
+                context.bot.send_document(chat_id, message[2], timeout=60)
             if i != 0 and i % 5 == 0:
                 sleep(50)
             else:
                 sleep(3)
     except Unauthorized:
-        logging.warning(f'USER ID has Blocked the Bot. Delete them: {user_id}')
+        logging.warning(f'USER ID has Blocked the Bot. Delete them: {chat_id}')
 
 
 def daily_message(context: CallbackContext):
