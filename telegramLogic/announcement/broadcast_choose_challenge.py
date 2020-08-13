@@ -8,6 +8,7 @@ def broadcast_choose_challenge(update: Update, context: CallbackContext):
 
     context.user_data.update({'broadcast_challenge': broadcast_challenge})
 
-    query.edit_message_text("Please reply with your announcement. Note: Once sent, it cannot be edited")
+    query.edit_message_text(
+        f"Please reply with your announcement to {broadcast_challenge}. Note: Once sent, it cannot be edited")
 
     return '/announcement'
