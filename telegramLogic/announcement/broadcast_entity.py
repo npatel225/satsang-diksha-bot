@@ -32,6 +32,7 @@ def broadcast_entity(update: Update, context: CallbackContext):
             else:
                 run_async_func(c.bot.send_message, chat_id=uid, text=message.text)
             logging.info(f'Iteration Completed {i}')
+        logging.info(f'Announcement has finished sending')
 
     job_queue.run_once(cb, 0, context=context.user_data)
 
