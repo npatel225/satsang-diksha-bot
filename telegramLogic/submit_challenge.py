@@ -43,9 +43,9 @@ def submit_challenge(update: Update, context: CallbackContext, edit=False):
         text = f'{message_dict.get(challenge, "Error in getting challenge")}'
 
         booket_link = f'📚 PDF Booklet - {challenge}'
-        milestone_link = f'📅 Milestones - {challenge}'
-        run_async_func(context.bot.send_photo, chat_id=person_id, message_id=message_dict.get(milestone_link))
         run_async_func(context.bot.send_document, chat_id=person_id, message_id=message_dict.get(booket_link))
+        milestone_link = f'📅 Milestones - {challenge}'
+        run_async_func(context.bot.send_photo, chat_id=person_id, photo=message_dict.get(milestone_link))
     else:
         challenge = user_sheet.get_tier(person_id)
         text = f'Your User ID, {person_id}, already exists. Please run `/change` to change your challenge'
