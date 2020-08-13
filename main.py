@@ -88,6 +88,7 @@ def main():
         states={
             '/challenge': [CallbackQueryHandler(broadcast_choose_challenge)],
             '/announcement': [
+                CommandHandler('cancel', lambda update, context: ConversationHandler.END),
                 MessageHandler(Filters.text | Filters.photo | Filters.document | Filters.video, broadcast_entity),
             ]
         },

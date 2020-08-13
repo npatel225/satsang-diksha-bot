@@ -1,9 +1,8 @@
 import logging
 from datetime import datetime
-from pytz import timezone
-from threading import Thread
 from typing import List
 
+from pytz import timezone
 from telegram import Update, User, CallbackQuery, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import CallbackContext, ConversationHandler
 
@@ -53,5 +52,5 @@ def submit_challenge(update: Update, context: CallbackContext, edit=False):
     custom_keyboard: List[List[KeyboardButton]] = list(
         map(lambda m: [KeyboardButton(text=f'{m} - {challenge}')], message_dict.get('info')))
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, selective=True)
-    Thread(target=lambda: context.bot.send_message(chat_id=person_id, text=text, reply_markup=reply_markup)).start()
+    run_async_func(context.bot.send_message, chat_id=person_id, text=text, reply_markup=reply_markup)
     return ConversationHandler.END

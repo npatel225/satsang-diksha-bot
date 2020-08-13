@@ -1,4 +1,4 @@
-from telegram import Update, Message, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 
 from restricted_command import restricted_command
