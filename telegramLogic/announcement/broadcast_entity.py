@@ -2,7 +2,7 @@ import logging
 from time import sleep
 
 from telegram import Update, Message
-from telegram.ext import CallbackContext, ConversationHandler, run_async, JobQueue
+from telegram.ext import CallbackContext, ConversationHandler, JobQueue
 
 from restricted_command import restricted_command
 from run_async_func import run_async_func
@@ -21,7 +21,7 @@ def broadcast_entity(update: Update, context: CallbackContext):
             challenge = None
 
         for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-            sleep(i % 5)
+            sleep(max(2, i % 6))
             logging.info(f'Sending Announcement to {uid}')
             if photos := message.photo:
                 run_async_func(c.bot.send_photo, chat_id=uid, photo=photos[-1], caption=message.caption)
