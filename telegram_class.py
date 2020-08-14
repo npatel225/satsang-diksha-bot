@@ -65,8 +65,8 @@ class Telegram:
             return ConversationHandler.END
 
     def execute(self):
-        PORT = int(os.environ.get("PORT", "8443"))
-        APP_NAME = os.environ.get("APP_NAME")
-        self.updater.start_webhook(listen='0.0.0.0', port=PORT, url_path=self.token)
-        self.updater.bot.set_webhook(f"{APP_NAME}{self.token}")
+        port = int(os.environ.get("PORT", "8443"))
+        app_name = os.environ.get("APP_NAME")
+        self.updater.start_webhook(listen='0.0.0.0', port=port, url_path=self.token)
+        self.updater.bot.set_webhook(f"{app_name}{self.token}")
         self.updater.idle()

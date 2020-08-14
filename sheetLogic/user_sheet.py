@@ -38,10 +38,8 @@ class UserSheet(SheetCore):
         return -1
 
     def get_tier_from_uid(self, uid: int):
-        print('getting tier', uid)
         try:
             cell = self.sheet.find(f'{uid}')
-            print(cell.row, cell.col)
             return cell.row, cell.col + 1
         except CellNotFound:
             return -1, -1

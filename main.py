@@ -86,7 +86,10 @@ def main():
     announcement_handler = ConversationHandler(
         entry_points=[CommandHandler('announcement', announcement)],
         states={
-            '/challenge': [CallbackQueryHandler(broadcast_choose_challenge)],
+            '/challenge': [
+                CommandHandler('cancel', lambda update, context: ConversationHandler.END),
+                CallbackQueryHandler(broadcast_choose_challenge),
+            ],
             '/announcement': [
                 CommandHandler('cancel', lambda update, context: ConversationHandler.END),
                 MessageHandler(Filters.text | Filters.photo | Filters.document | Filters.video, broadcast_entity),
