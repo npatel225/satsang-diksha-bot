@@ -1,3 +1,5 @@
+from os import getenv
+
 from telegram import Update
 from telegram.ext import CallbackContext
 
@@ -21,6 +23,7 @@ def today_message(update: Update, context: CallbackContext):
 
     challenge_logic = ChallengeLogic()
 
-    messages = challenge_logic.get_today_data()[challenge]
+    hour_delta = 0 if getenv('ENV') not in ['DEV', 'LOCAL'] else 24
+    messages = challenge_logic.get_today_data(hour_delta=hour_delta)[challenge]
 
     parse_message(context, chat_id, messages)
