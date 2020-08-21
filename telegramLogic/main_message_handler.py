@@ -15,5 +15,4 @@ def main_message_handler(update: Update, context: CallbackContext):
     message.reply_text(text=message_dict.get(message.text,
                                              "You have entered an incorrect command. "
                                              "Please enter a valid command. "
-                                             "If your buttons are not working, please run `/start` again"),
-                       quote=True)
+                                             "If your buttons are not working, please run `/start` again"))

@@ -10,7 +10,7 @@ from SC import SERVICE_ACCOUNT
 from telegramLogic.announcement.announcement import announcement
 from telegramLogic.announcement.broadcast_choose_challenge import broadcast_choose_challenge
 from telegramLogic.announcement.broadcast_entity import broadcast_entity
-from telegramLogic.choose_tier import choose_challenge
+from telegramLogic.choose_challenge import choose_challenge
 from telegramLogic.daily_message import daily_message
 from telegramLogic.main_message_handler import main_message_handler
 from telegramLogic.submit_challenge import submit_challenge
