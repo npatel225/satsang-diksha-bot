@@ -37,7 +37,7 @@ class UserSheet(SheetCore):
         logging.info('User does not exist')
         return -1
 
-    def get_tier_from_uid(self, uid: int):
+    def get_challenge_cell_from_uid(self, uid: int):
         try:
             cell = self.sheet.find(f'{uid}')
             return cell.row, cell.col + 1

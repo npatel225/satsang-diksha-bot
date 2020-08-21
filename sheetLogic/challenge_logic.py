@@ -7,7 +7,7 @@ from enums.MessageEnum import MessageEnum
 from sheetLogic.sheet_core import SheetCore
 
 
-class TierLogic(SheetCore):
+class ChallengeLogic(SheetCore):
     def __init__(self):
         super().__init__()
         self.challenge_sheets: Dict[str, Worksheet] = self.get_sheets()
