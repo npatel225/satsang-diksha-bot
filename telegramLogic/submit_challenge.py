@@ -28,7 +28,7 @@ def submit_challenge(update: Update, context: CallbackContext, edit=False):
     run_async_func(context.bot.delete_message, chat_id=person_id, message_id=query.message.message_id)
     if edit:
         logging.info(f'Switching challenge to: {challenge}')
-        row, col = user_sheet.get_tier_from_uid(person_id)
+        row, col = user_sheet.get_challenge_cell_from_uid(person_id)
         if user_sheet.update_cell(row, col, challenge) != -1:
             text = f'{message_dict.get(challenge, "Error in getting challenge")}' \
                    f'\n\nNote: You will have to catch up if you have switched to a challenge with more shlokas.'

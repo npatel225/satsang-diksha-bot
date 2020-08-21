@@ -1,7 +1,10 @@
 from telegram import Update, CallbackQuery
 from telegram.ext import CallbackContext
 
+from restricted_command import restricted_command
 
+
+@restricted_command
 def broadcast_choose_challenge(update: Update, context: CallbackContext):
     query: CallbackQuery = update.callback_query
     broadcast_challenge = query.data
