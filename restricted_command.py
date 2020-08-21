@@ -25,7 +25,7 @@ def unregistered_uid_check(func):
     def wrapped(update, context, *args, **kwargs):
         chat_id = update.effective_user.id
         user_sheet = UserSheet()
-        if chat_id not in user_sheet.uid_check(chat_id):
+        if not user_sheet.uid_check(chat_id):
             update.message.reply_text('We could not locate you. Please run `/start` to register')
             return ConversationHandler.END
         return func(update, context, *args, **kwargs)
@@ -38,7 +38,7 @@ def registered_uid_check(func):
     def wrapped(update, context, *args, **kwargs):
         chat_id = update.effective_user.id
         user_sheet = UserSheet()
-        if chat_id in user_sheet.uid_check(chat_id):
+        if user_sheet.uid_check(chat_id):
             update.message.reply_text(
                 f'Your User ID, {chat_id}, already exists. Please run `/change` to change your challenge')
             return ConversationHandler.END
