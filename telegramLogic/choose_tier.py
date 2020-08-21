@@ -10,7 +10,7 @@ def choose_challenge(update: Update, context: CallbackContext):
     message_dict = SheetMessages().message_dict()
     message: Message = update.message
     message.delete()
-    message.reply_text(message_dict.get('startup_message', 'Jai Swaminarayan'))
+    message.reply_text(message_dict.get('startup_message', 'Jai Swaminarayan'), quote=True)
 
     tiers = ('Mahant', 'Pramukh', 'Yogi', 'Shastriji')
     keyboard = [[InlineKeyboardButton(tier, callback_data=f'{tier}')] for tier in tiers]
