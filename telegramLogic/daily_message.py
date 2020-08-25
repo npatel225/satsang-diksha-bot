@@ -20,7 +20,7 @@ def parse_message(context: CallbackContext, chat_id: str, messages: List[Tuple[s
                 context.bot.send_document(chat_id, message[0],
                                           caption=f'{date.today().strftime("%m/%d/%Y")} - {message[3]}', timeout=60)
             elif message[3]:
-                context.bot.send_message(chat_id, message[3], timeout=60)
+                context.bot.send_message(chat_id, f'{date.today().strftime("%m/%d/%Y")} - {message[3]}', timeout=60)
             if message[1]:
                 context.bot.send_document(chat_id, message[1], timeout=60)
             if message[2]:
