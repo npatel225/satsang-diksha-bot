@@ -1,7 +1,8 @@
 import logging
 from datetime import datetime, time
 from functools import partial
-from os import getenv
+from os import getenv, environ
+import time as t
 
 from telegram.ext import ConversationHandler, CommandHandler, \
     MessageHandler, Filters, CallbackQueryHandler, JobQueue
@@ -23,8 +24,11 @@ def main():
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     telegram = Telegram()
     telegram.initialize()
-
     job_queue: JobQueue = telegram.job_queue
+
+    environ['TZ'] = 'US/Eastern'
+    t.tzset()
+
     logging.info(f'Time Right now: {datetime.now()}')
     if getenv('ENV') == 'LOCAL':
         job_queue.run_once(daily_message, 0)
