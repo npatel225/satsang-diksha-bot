@@ -17,12 +17,12 @@ class ChallengeLogic(SheetCore):
 
     def get_today_data(self, hour_delta=0) -> Dict[str, List[Tuple[str, str, str, str]]]:
         today_data: Dict[str, List[Tuple[str, str, str, str]]] = defaultdict(list)
+        requested_date = date.today() + timedelta(hours=hour_delta)
         for challenge, tier_sheet in self.challenge_sheets.items():
             for data in tier_sheet.get_all_values()[1:]:
                 try:
-                    given_datetime = datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y') - timedelta(
-                        hours=hour_delta)
-                    if given_datetime.date() == date.today():
+                    given_datetime = datetime.strptime(data[MessageEnum.DATE.value], '%m/%d/%Y')
+                    if given_datetime.date() == requested_date:
                         today_data[challenge].append(
                             (data[MessageEnum.VIDEO_LINK.value],
                              data[MessageEnum.GRAPHIC_LINK.value],
