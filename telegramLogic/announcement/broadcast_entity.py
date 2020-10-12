@@ -21,7 +21,8 @@ def broadcast_entity(update: Update, context: CallbackContext):
             challenge = None
 
         for i, uid in enumerate(user_sheet.get_challenge_uids(challenge=challenge)):
-            sleep(1)
+            if i % 25 == 0:
+                sleep(2)
             logging.info(f'Sending Announcement to {uid}')
             if photos := message.photo:
                 run_async_func(c.bot.send_photo, chat_id=uid, photo=photos[-1], caption=message.caption)

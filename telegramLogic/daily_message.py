@@ -26,9 +26,9 @@ def parse_message(context: CallbackContext, chat_id: str, messages: List[Tuple[s
             if message[2]:
                 context.bot.send_document(chat_id, message[2], timeout=60)
             if i != 0 and i % 5 == 0:
-                sleep(50)
+                sleep(30)
             else:
-                sleep(3)
+                sleep(2)
     except Unauthorized:
         logging.warning(f'USER ID has Blocked the Bot. Delete them: {chat_id}')
 
@@ -46,7 +46,8 @@ def daily_message(context: CallbackContext):
         logging.info(f'Starting Challenge: {challenge}')
         for i, user_id in enumerate(users[challenge]):
             logging.info(f'User ID: {user_id}. Iteration: {i}. Total Iterations: {len(users[challenge])}')
-            sleep(max(2, i % 5))
+            if i % 25 == 0:
+                sleep(5)
             parse_message(context, user_id, messages)
         logging.info(f'Finished Challenge: {challenge}.')
     logging.info(f'Daily Message Done Sending {datetime.now()}')
